@@ -22,9 +22,10 @@ export default function Dropdown({
   };
 
   const handleSelect = (option: string) => {
+    console.dir(option, "OPTIONNNNN");
     setSelected(option);
     setIsOpen(false);
-    if (onSelectAction) onSelectAction(option);
+    onSelectAction(option);
   };
 
   return (
