@@ -139,9 +139,7 @@ export default function DropdownFilters({
         onClick={handleSubmit}
         disabled={
           !selectedLocation ||
-          !selectedCategory ||
-          !selectedBrand ||
-          !selectedColour
+          !selectedCategory
         }
       >
         Submit
