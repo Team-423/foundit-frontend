@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Header = () => {
   return (
-    <header className="w-full flex justify-between items-center p-4 bg-gray-500 shadow-md">
+    <header className="w-full flex justify-between items-center p-4 bg-gray-500 shadow-md sticky top-0">
       <Link href="/">
         <h1>FoundIt</h1>
       </Link>
