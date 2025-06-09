@@ -1,7 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import ItemLocationMap from "../components/ItemLocationMap";
+import dynamic from "next/dynamic";
+
+const ItemLocationMap = dynamic(() => import("../components/ItemLocationMap"), {
+  ssr: false,
+});
 
 export default function PostLostItemPage() {
   const [itemName, setItemName] = useState("");
@@ -61,8 +65,12 @@ export default function PostLostItemPage() {
       setDetails("");
       setCoords(null);
       setAddress(null);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred.");
+      }
     }
   };
 
