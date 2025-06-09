@@ -129,10 +129,9 @@ export default function DropdownFilters({
             label="Colour"
             onSelectAction={setSelectedColour}
           />
-        </div>
-        <div className="flex justify-center">
+
           <button
-            className="m-4 p-2 bg-gray-300 rounded alig-center"
+            className="bg-[#669bbc] rounded alig-center w-35"
             onClick={handleSubmit}
             disabled={!selectedLocation || !selectedCategory}
           >

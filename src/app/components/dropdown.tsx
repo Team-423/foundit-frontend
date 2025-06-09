@@ -40,7 +40,7 @@ export default function Dropdown({
         </button>
 
         {isOpen && (
-          <div className="absolute mt-1 w-full rounded bg-gray-100 shadow z-10">
+          <div className="absolute mt-1 w-full rounded bg-gray-100 shadow z-10 max-h-60 overflow-y-scroll">
             {options.map((option, index) => (
               <button
                 key={index}
