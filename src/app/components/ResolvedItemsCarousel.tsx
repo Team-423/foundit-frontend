@@ -29,7 +29,7 @@ export default function ResolvedItemsCarousel() {
           {items.map((item, index) => (
             <div
               key={index}
-              className="min-w-[200px] max-w-[250px] min-h-[15rem] flex-shrink-0 bg-[#ADBDC2] rounded-4xl border shadow-md p-4 text-center snap-start"
+              className="min-w-[200px] max-w-[250px] min-h-[15rem] flex-shrink-0 bg-[#9FD8CE] rounded-4xl shadow-md p-4 text-center snap-start"
             >
               {/* Item Title */}
               <h3 className="mt-4 mb-0 font-semibold text-lg">
