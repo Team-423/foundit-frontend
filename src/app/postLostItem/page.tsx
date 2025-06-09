@@ -25,15 +25,15 @@ export default function PostLostItemPage() {
     }
 
     const postedItem = {
-      item_name: itemName,
+      item_name: "Black Walle",
       author: "johndoe",
       category: "Accessories",
       description: "Leather wallet containing ID and credit cards",
-      location: address,
-      colour: "someColourId",
-      size: "Medium",
-      brand: "someBrandId",
-      material: "Nylon",
+      location: "Manchester",
+      colour: "Black",
+      size: "Small",
+      brand: "Fossil",
+      material: "Leather",
       img_url:
         "https://cdn.pixabay.com/photo/2020/03/28/13/26/wallet-4977021_1280.jpg",
       resolved: false,
