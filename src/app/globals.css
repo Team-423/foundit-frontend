@@ -1,1 +1,34 @@
 @import "tailwindcss";
+@layer theme, base, components, utilities;
+
+/* Lapis Lazuli (logo - dark blue) - #22577A */
+/* Verdigris (logo - green-ish) - #38A3A5 */
+
+@layer base {
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+  button {
+    cursor: pointer;
+  }
+}
+
+@layer utilities {
+  .leaflet-container.custom-cursor {
+    cursor: url("/images/pindrop-icon/custom-pindrop-cursor-red.png") 19 38,
+      crosshair !important;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+@layer components {
+  .custom-pulse {
+    animation-duration: 1.2s;
+  }
+}

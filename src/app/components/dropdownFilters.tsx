@@ -111,39 +111,40 @@ export default function DropdownFilters({
 
   return (
     <>
-      <p>Please select your options:</p>
-      <div className="flex justify-center gap-8">
-        <Dropdown
-          options={locations.map((location) => location.location_name)}
-          label="Location"
-          onSelectAction={setSelectedLocation}
-        />
-        <Dropdown
-          options={categories.map((category) => category.category_name)}
-          label="Category"
-          onSelectAction={setSelectedCategory}
-        />
-        <Dropdown
-          options={brands.map((brand) => brand.brand_name)}
-          label="Brand"
-          onSelectAction={setSelectedBrand}
-        />
-        <Dropdown
-          options={colour.map((colour) => colour.colour)}
-          label="Colour"
-          onSelectAction={setSelectedColour}
-        />
+      <div className="m-10 space-y-6">
+        <p>Please select your options:</p>
+        <div className="flex justify-center gap-8 ">
+          <Dropdown
+            options={locations.map((location) => location.location_name)}
+            label="Location"
+            onSelectAction={setSelectedLocation}
+          />
+          <Dropdown
+            options={categories.map((category) => category.category_name)}
+            label="Category"
+            onSelectAction={setSelectedCategory}
+          />
+          <Dropdown
+            options={brands.map((brand) => brand.brand_name)}
+            label="Brand"
+            onSelectAction={setSelectedBrand}
+          />
+          <Dropdown
+            options={colour.map((colour) => colour.colour)}
+            label="Colour"
+            onSelectAction={setSelectedColour}
+          />
+        </div>
+        <div className="flex justify-center">
+          <button
+            className="m-4 p-2 bg-gray-300 rounded alig-center"
+            onClick={handleSubmit}
+            disabled={!selectedLocation || !selectedCategory}
+          >
+            Submit
+          </button>
+        </div>
       </div>
-      <button
-        className="m-4 p-2 bg-gray-300 rounded"
-        onClick={handleSubmit}
-        disabled={
-          !selectedLocation ||
-          !selectedCategory
-        }
-      >
-        Submit
-      </button>
     </>
   );
 }
