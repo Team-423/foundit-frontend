@@ -6,12 +6,29 @@ import ResolvedItemsCarousel from "./components/ResolvedItemsCarousel";
 
 export default function Page() {
   const handleFiltersChange = (filters: {
-    location: string;
-    category: string;
-    brand: string;
-    colour: string;
+    location: { id: string; name: string };
+    category: { id: string; name: string };
+    brand: { id: string; name: string };
+    colour: { id: string; name: string };
   }) => {
-    console.log(filters);
+    console.log("Selected filters:", {
+      location: {
+        id: filters.location.id,
+        name: filters.location.name,
+      },
+      category: {
+        id: filters.category.id,
+        name: filters.category.name,
+      },
+      brand: {
+        id: filters.brand.id,
+        name: filters.brand.name,
+      },
+      colour: {
+        id: filters.colour.id,
+        name: filters.colour.name,
+      },
+    });
   };
 
   return (

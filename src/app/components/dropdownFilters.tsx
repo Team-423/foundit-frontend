@@ -11,15 +11,22 @@ import {
 } from "../../utils/api";
 
 interface Location {
+  _id: string;
   location_name: string;
 }
+
 interface Category {
+  _id: string;
   category_name: string;
 }
+
 interface Brand {
+  _id: string;
   brand_name: string;
 }
+
 interface Colour {
+  _id: string;
   colour: string;
 }
 
@@ -27,16 +34,16 @@ export default function DropdownFilters({
   handleFiltersChange,
 }: {
   handleFiltersChange?: (filters: {
-    location: string;
-    category: string;
-    brand: string;
-    colour: string;
+    location: { id: string; name: string };
+    category: { id: string; name: string };
+    brand: { id: string; name: string };
+    colour: { id: string; name: string };
   }) => void;
 }) {
-  const [categories, setCategories] = useState<string[]>([]);
-  const [locations, setLocations] = useState<string[]>([]);
-  const [brands, setBrands] = useState<string[]>([]);
-  const [colours, setColours] = useState<string[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [locations, setLocations] = useState<Location[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
+  const [colours, setColours] = useState<Colour[]>([]);
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
   const [isLoadingLocations, setIsLoadingLocations] = useState(true);
   const [isLoadingBrands, setIsLoadingBrands] = useState(true);
@@ -45,8 +52,8 @@ export default function DropdownFilters({
 
   useEffect(() => {
     getCategories()
-      .then((categoryNames) => {
-        setCategories(categoryNames);
+      .then((categoryData) => {
+        setCategories(categoryData);
       })
       .catch((error) => {
         console.error("Error fetching categories:", error);
@@ -57,8 +64,8 @@ export default function DropdownFilters({
       });
 
     getLocations()
-      .then((locationNames) => {
-        setLocations(locationNames);
+      .then((locationData) => {
+        setLocations(locationData);
       })
       .catch((error) => {
         console.error("Error fetching locations:", error);
@@ -69,8 +76,8 @@ export default function DropdownFilters({
       });
 
     getBrands()
-      .then((brandNames) => {
-        setBrands(brandNames);
+      .then((brandData) => {
+        setBrands(brandData);
       })
       .catch((error) => {
         console.error("Error fetching brands:", error);
@@ -81,8 +88,8 @@ export default function DropdownFilters({
       });
 
     getColours()
-      .then((colourNames) => {
-        setColours(colourNames);
+      .then((colourData) => {
+        setColours(colourData);
       })
       .catch((error) => {
         console.error("Error fetching colours:", error);
@@ -93,10 +100,22 @@ export default function DropdownFilters({
       });
   }, []);
 
-  const [selectedLocation, setSelectedLocation] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedBrand, setSelectedBrand] = useState("");
-  const [selectedColour, setSelectedColour] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState<{
+    id: string;
+    name: string;
+  }>({ id: "", name: "" });
+  const [selectedCategory, setSelectedCategory] = useState<{
+    id: string;
+    name: string;
+  }>({ id: "", name: "" });
+  const [selectedBrand, setSelectedBrand] = useState<{
+    id: string;
+    name: string;
+  }>({ id: "", name: "" });
+  const [selectedColour, setSelectedColour] = useState<{
+    id: string;
+    name: string;
+  }>({ id: "", name: "" });
 
   const handleSubmit = () => {
     if (handleFiltersChange) {
@@ -120,22 +139,50 @@ export default function DropdownFilters({
         )}
         <div className="flex justify-center gap-8 ">
           <Dropdown
-            options={isLoadingLocations ? ["Loading..."] : locations}
+            options={
+              isLoadingLocations
+                ? [{ id: "", name: "Loading..." }]
+                : locations.map((loc) => ({
+                    id: loc._id,
+                    name: loc.location_name,
+                  }))
+            }
             label="Location"
             onSelectAction={setSelectedLocation}
           />
           <Dropdown
-            options={isLoadingCategories ? ["Loading..."] : categories}
+            options={
+              isLoadingCategories
+                ? [{ id: "", name: "Loading..." }]
+                : categories.map((cat) => ({
+                    id: cat._id,
+                    name: cat.category_name,
+                  }))
+            }
             label="Category"
             onSelectAction={setSelectedCategory}
           />
           <Dropdown
-            options={isLoadingBrands ? ["Loading..."] : brands}
+            options={
+              isLoadingBrands
+                ? [{ id: "", name: "Loading..." }]
+                : brands.map((brand) => ({
+                    id: brand._id,
+                    name: brand.brand_name,
+                  }))
+            }
             label="Brand"
             onSelectAction={setSelectedBrand}
           />
           <Dropdown
-            options={isLoadingColours ? ["Loading..."] : colours}
+            options={
+              isLoadingColours
+                ? [{ id: "", name: "Loading..." }]
+                : colours.map((colour) => ({
+                    id: colour._id,
+                    name: colour.colour,
+                  }))
+            }
             label="Colour"
             onSelectAction={setSelectedColour}
           />
@@ -143,7 +190,7 @@ export default function DropdownFilters({
           <button
             className="bg-[#38A3A5] rounded alig-center w-35 font-bold"
             onClick={handleSubmit}
-            disabled={!selectedLocation || !selectedCategory}
+            disabled={!selectedLocation.id || !selectedCategory.id}
           >
             Search
           </button>
