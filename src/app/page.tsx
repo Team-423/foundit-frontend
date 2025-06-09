@@ -33,7 +33,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="h-500">
+      <div className="min-h-[500px]">
         <h1 className="text-3xl font-bold underline text-center p-10">
           Hello, team 423! :)
         </h1>
