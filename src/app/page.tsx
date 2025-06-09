@@ -2,6 +2,7 @@
 "use client";
 
 import DropdownFilters from "./components/dropdownFilters";
+import ResolvedItemsCarousel from "./components/ResolvedItemsCarousel";
 
 export default function Page() {
   const handleFiltersChange = (filters: {
@@ -15,8 +16,13 @@ export default function Page() {
 
   return (
     <>
-      <h1 className="text-3xl font-bold underline">Hello, team 423!</h1>
-      <DropdownFilters handleFiltersChange={handleFiltersChange} />
+      <div className="h-500">
+        <h1 className="text-3xl font-bold underline text-center p-10">
+          Hello, team 423! :)
+        </h1>
+        <ResolvedItemsCarousel />
+        <DropdownFilters handleFiltersChange={handleFiltersChange} />
+      </div>
     </>
   );
 }
