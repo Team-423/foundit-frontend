@@ -41,6 +41,7 @@ export default function DropdownFilters({
   const [isLoadingLocations, setIsLoadingLocations] = useState(true);
   const [isLoadingBrands, setIsLoadingBrands] = useState(true);
   const [isLoadingColours, setIsLoadingColours] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     getCategories()
@@ -48,7 +49,8 @@ export default function DropdownFilters({
         setCategories(categoryNames);
       })
       .catch((error) => {
-        console.log(error);
+        console.error("Error fetching categories:", error);
+        setIsError(true);
       })
       .finally(() => {
         setIsLoadingCategories(false);
@@ -59,7 +61,8 @@ export default function DropdownFilters({
         setLocations(locationNames);
       })
       .catch((error) => {
-        console.log(error);
+        console.error("Error fetching locations:", error);
+        setIsError(true);
       })
       .finally(() => {
         setIsLoadingLocations(false);
@@ -70,7 +73,8 @@ export default function DropdownFilters({
         setBrands(brandNames);
       })
       .catch((error) => {
-        console.log(error);
+        console.error("Error fetching brands:", error);
+        setIsError(true);
       })
       .finally(() => {
         setIsLoadingBrands(false);
@@ -81,12 +85,13 @@ export default function DropdownFilters({
         setColours(colourNames);
       })
       .catch((error) => {
-        console.log(error);
+        console.error("Error fetching colours:", error);
+        setIsError(true);
       })
       .finally(() => {
         setIsLoadingColours(false);
       });
-  }, [categories, locations, brands, colours]);
+  }, []);
 
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -108,6 +113,11 @@ export default function DropdownFilters({
     <>
       <div className="m-10 space-y-6">
         <p>Please select your options:</p>
+        {isError && (
+          <p className="text-red-500 text-sm">
+            Failed to load some filters. Please refresh the page.
+          </p>
+        )}
         <div className="flex justify-center gap-8 ">
           <Dropdown
             options={isLoadingLocations ? ["Loading..."] : locations}
@@ -131,11 +141,11 @@ export default function DropdownFilters({
           />
 
           <button
-            className="bg-[#669bbc] rounded alig-center w-35"
+            className="bg-[#38A3A5] rounded alig-center w-35 font-bold"
             onClick={handleSubmit}
             disabled={!selectedLocation || !selectedCategory}
           >
-            Submit
+            Search
           </button>
         </div>
       </div>
