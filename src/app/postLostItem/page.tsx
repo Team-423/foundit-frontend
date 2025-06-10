@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import { getCategories, getColours, getBrands } from "../../utils/api";
 
 const ItemLocationMap = dynamic(() => import("../components/ItemLocationMap"), {
   ssr: false,
@@ -15,8 +16,43 @@ export default function PostLostItemPage() {
   );
   const [address, setAddress] = useState<string | null>(null);
 
+  const [category, setCategory] = useState("");
+  const [colour, setColour] = useState("");
+  const [brand, setBrand] = useState("");
+  const [size, setSize] = useState("");
+  const [material, setMaterial] = useState("");
+
+  const [categoryOptions, setCategoryOptions] = useState<
+    { _id: string; category_name: string }[]
+  >([]);
+  const [colourOptions, setColourOptions] = useState<
+    { _id: string; colour: string }[]
+  >([]);
+  const [brandOptions, setBrandOptions] = useState<
+    { _id: string; brand_name: string }[]
+  >([]);
+
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+
+  const sizeOptions = ["One Size", "Small", "Medium", "Large", "Extra Large"];
+  const materialOptions = [
+    "Leather",
+    "Fabric",
+    "Metal",
+    "Plastic",
+    "Paper",
+    "Other",
+  ];
+
+  useEffect(() => {
+    const fetchOptions = async () => {
+      setCategoryOptions(await getCategories());
+      setColourOptions(await getColours());
+      setBrandOptions(await getBrands());
+    };
+    fetchOptions();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,15 +65,15 @@ export default function PostLostItemPage() {
     }
 
     const postedItem = {
-      item_name: "Black Walle",
+      item_name: itemName,
       author: "johndoe",
-      category: "Accessories",
-      description: "Leather wallet containing ID and credit cards",
-      location: "Manchester",
-      colour: "Black",
-      size: "Small",
-      brand: "Fossil",
-      material: "Leather",
+      category,
+      description: details,
+      location: address,
+      colour,
+      size,
+      brand,
+      material,
       img_url:
         "https://cdn.pixabay.com/photo/2020/03/28/13/26/wallet-4977021_1280.jpg",
       resolved: false,
@@ -65,6 +101,11 @@ export default function PostLostItemPage() {
       setDetails("");
       setCoords(null);
       setAddress(null);
+      setCategory("");
+      setColour("");
+      setBrand("");
+      setSize("");
+      setMaterial("");
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -98,6 +139,90 @@ export default function PostLostItemPage() {
             required
             className="w-full border p-2 rounded"
           />
+        </div>
+
+        <div>
+          <label className="block font-medium">Category</label>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            required
+            className="w-full border p-2 rounded"
+          >
+            <option value="">Select a category</option>
+            {categoryOptions.map((cat) => (
+              <option key={cat._id} value={cat.category_name}>
+                {cat.category_name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="block font-medium">Colour</label>
+          <select
+            value={colour}
+            onChange={(e) => setColour(e.target.value)}
+            required
+            className="w-full border p-2 rounded"
+          >
+            <option value="">Select a colour</option>
+            {colourOptions.map((col) => (
+              <option key={col._id} value={col.colour}>
+                {col.colour}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="block font-medium">Brand</label>
+          <select
+            value={brand}
+            onChange={(e) => setBrand(e.target.value)}
+            required
+            className="w-full border p-2 rounded"
+          >
+            <option value="">Select a brand</option>
+            {brandOptions.map((br) => (
+              <option key={br._id} value={br.brand_name}>
+                {br.brand_name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="block font-medium">Size</label>
+          <select
+            value={size}
+            onChange={(e) => setSize(e.target.value)}
+            required
+            className="w-full border p-2 rounded"
+          >
+            <option value="">Select a size</option>
+            {sizeOptions.map((sz) => (
+              <option key={sz} value={sz}>
+                {sz}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="block font-medium">Material</label>
+          <select
+            value={material}
+            onChange={(e) => setMaterial(e.target.value)}
+            required
+            className="w-full border p-2 rounded"
+          >
+            <option value="">Select a material</option>
+            {materialOptions.map((mat) => (
+              <option key={mat} value={mat}>
+                {mat}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>
