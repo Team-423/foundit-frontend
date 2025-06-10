@@ -31,7 +31,7 @@ interface Colour {
 }
 
 export default function DropdownFilters({
-  handleFiltersChange,
+  handleFiltersChange, selectedFilters
 }: {
   handleFiltersChange?: (filters: {
     location: { id: string; name: string };
@@ -39,6 +39,12 @@ export default function DropdownFilters({
     brand: { id: string; name: string };
     colour: { id: string; name: string };
   }) => void;
+  selectedFilters?: {
+    location: { id: string; name: string };
+    category: { id: string; name: string };
+    brand: { id: string; name: string };
+    colour: { id: string; name: string };
+  };
 }) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [locations, setLocations] = useState<Location[]>([]);
@@ -49,57 +55,57 @@ export default function DropdownFilters({
   const [isLoadingBrands, setIsLoadingBrands] = useState(true);
   const [isLoadingColours, setIsLoadingColours] = useState(true);
   const [isError, setIsError] = useState(false);
-
+  
   useEffect(() => {
     getCategories()
-      .then((categoryData) => {
-        setCategories(categoryData);
-      })
-      .catch((error) => {
-        console.error("Error fetching categories:", error);
-        setIsError(true);
-      })
-      .finally(() => {
-        setIsLoadingCategories(false);
-      });
-
+    .then((categoryData) => {
+      setCategories(categoryData);
+    })
+    .catch((error) => {
+      console.error("Error fetching categories:", error);
+      setIsError(true);
+    })
+    .finally(() => {
+      setIsLoadingCategories(false);
+    });
+    
     getLocations()
-      .then((locationData) => {
-        setLocations(locationData);
-      })
-      .catch((error) => {
-        console.error("Error fetching locations:", error);
-        setIsError(true);
-      })
-      .finally(() => {
-        setIsLoadingLocations(false);
-      });
-
+    .then((locationData) => {
+      setLocations(locationData);
+    })
+    .catch((error) => {
+      console.error("Error fetching locations:", error);
+      setIsError(true);
+    })
+    .finally(() => {
+      setIsLoadingLocations(false);
+    });
+    
     getBrands()
-      .then((brandData) => {
-        setBrands(brandData);
-      })
-      .catch((error) => {
-        console.error("Error fetching brands:", error);
-        setIsError(true);
-      })
-      .finally(() => {
-        setIsLoadingBrands(false);
-      });
-
+    .then((brandData) => {
+      setBrands(brandData);
+    })
+    .catch((error) => {
+      console.error("Error fetching brands:", error);
+      setIsError(true);
+    })
+    .finally(() => {
+      setIsLoadingBrands(false);
+    });
+    
     getColours()
-      .then((colourData) => {
-        setColours(colourData);
-      })
-      .catch((error) => {
-        console.error("Error fetching colours:", error);
-        setIsError(true);
-      })
-      .finally(() => {
-        setIsLoadingColours(false);
-      });
+    .then((colourData) => {
+      setColours(colourData);
+    })
+    .catch((error) => {
+      console.error("Error fetching colours:", error);
+      setIsError(true);
+    })
+    .finally(() => {
+      setIsLoadingColours(false);
+    });
   }, []);
-
+  
   const [selectedLocation, setSelectedLocation] = useState<{
     id: string;
     name: string;
@@ -116,6 +122,15 @@ export default function DropdownFilters({
     id: string;
     name: string;
   }>({ id: "", name: "" });
+  
+  useEffect(() => {
+    if (selectedFilters) {
+      setSelectedLocation(selectedFilters.location);
+      setSelectedCategory(selectedFilters.category);
+      setSelectedBrand(selectedFilters.brand);
+      setSelectedColour(selectedFilters.colour);
+    }
+  }, [selectedFilters])
 
   const handleSubmit = () => {
     if (handleFiltersChange) {
@@ -131,7 +146,7 @@ export default function DropdownFilters({
   return (
     <>
       <div className="m-10 space-y-6">
-        <p>Please select your options:</p>
+        <p>Please select your options: (* fields are required)</p>
         {isError && (
           <p className="text-red-500 text-sm">
             Failed to load some filters. Please refresh the page.
@@ -147,8 +162,9 @@ export default function DropdownFilters({
                     name: loc.location_name,
                   }))
             }
-            label="Location"
+            label="Location*"
             onSelectAction={setSelectedLocation}
+            selected={selectedLocation}
           />
           <Dropdown
             options={
@@ -159,8 +175,9 @@ export default function DropdownFilters({
                     name: cat.category_name,
                   }))
             }
-            label="Category"
+            label="Category*"
             onSelectAction={setSelectedCategory}
+            selected={selectedCategory}
           />
           <Dropdown
             options={
@@ -173,6 +190,7 @@ export default function DropdownFilters({
             }
             label="Brand"
             onSelectAction={setSelectedBrand}
+            selected={selectedBrand}
           />
           <Dropdown
             options={
@@ -185,6 +203,7 @@ export default function DropdownFilters({
             }
             label="Colour"
             onSelectAction={setSelectedColour}
+            selected={selectedColour}
           />
 
           <button

@@ -59,6 +59,20 @@ interface ItemImgResponse {
   };
 }
 
+export interface ItemResponse {
+  itemById: {
+    _id: string;
+    item_name: string;
+    description: string;
+    size: string;
+    material: string;
+    location: { _id: string; location_name: string };
+    category: { _id: string; category_name: string };
+    brand: { _id: string; brand_name: string };
+    colour: { _id: string; colour: string };
+  };
+}
+
 const itemsApi = axios.create({
   baseURL: "https://foundit-backend-dg0o.onrender.com/api/items",
 });
@@ -119,4 +133,49 @@ export const patchQandA = async (item_id: string, answers: string[]) => {
 export const getItemImgById = async (item_id: string) => {
   const { data } = await itemsApi.get<ItemImgResponse>(`/${item_id}`);
   return data.itemById.img_url;
+};
+
+export const getItemById = async (item_id: string) => {
+  const { data } = await itemsApi.get<ItemResponse>(`/${item_id}`);
+  return {
+    item_name: data.itemById.item_name || "",
+    description: data.itemById.description || "",
+    size: data.itemById.size || "",
+    material: data.itemById.material || "",
+    location: {
+      id: data.itemById.location?._id || "",
+      name: data.itemById.location?.location_name || "",
+    },
+    category: {
+      id: data.itemById.category?._id || "",
+      name: data.itemById.category?.category_name || "",
+    },
+    brand: {
+      id: data.itemById.brand?._id || "",
+      name: data.itemById.brand?.brand_name || "",
+    },
+    colour: {
+      id: data.itemById.colour?._id || "",
+      name: data.itemById.colour?.colour || "",
+    },
+  };
+};
+
+interface UpdateItemData {
+  item_name?: string;
+  material?: string;
+  description?: string;
+  size?: string;
+  location?: { id: string; name: string };
+  category?: { id: string; name: string };
+  brand?: { id: string; name: string };
+  colour?: { id: string; name: string };
+}
+
+export const updateItemById = async (
+  itemId: string,
+  updatedData: UpdateItemData
+) => {
+  const { data } = await axios.patch(`/items/${itemId}`, updatedData);
+  return data.itemById;
 };

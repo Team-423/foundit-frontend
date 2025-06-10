@@ -13,25 +13,27 @@ type DropdownProps = {
   options: Option[];
   label: string;
   onSelectAction: (selected: Option) => void;
+  selected?: Option
 };
 
 export default function Dropdown({
   options,
   label,
   onSelectAction,
+  selected,
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selected, setSelected] = useState<string>(label);
 
   const toggleDropdown = () => {
     setIsOpen((currentState) => !currentState);
   };
 
   const handleSelect = (option: Option) => {
-    setSelected(option.name);
     setIsOpen(false);
     onSelectAction(option);
   };
+
+  const displayText = selected?.name || label;
 
   return (
     <div className="flex justify-center">
@@ -41,7 +43,7 @@ export default function Dropdown({
           className="border rounded px-3 py-1 bg-white text-black w-35"
           onClick={toggleDropdown}
         >
-          {selected}
+          {displayText}
         </button>
 
         {isOpen && (
