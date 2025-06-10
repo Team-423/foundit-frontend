@@ -13,23 +13,22 @@ type DropdownProps = {
   options: Option[];
   label: string;
   onSelectAction: (selected: Option) => void;
+  isOpen: boolean;
+  onToggle: () => void;
 };
 
 export default function Dropdown({
   options,
   label,
   onSelectAction,
+  isOpen,
+  onToggle,
 }: DropdownProps) {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selected, setSelected] = useState<string>(label);
-
-  const toggleDropdown = () => {
-    setIsOpen((currentState) => !currentState);
-  };
 
   const handleSelect = (option: Option) => {
     setSelected(option.name);
-    setIsOpen(false);
+    onToggle();
     onSelectAction(option);
   };
 
@@ -39,7 +38,7 @@ export default function Dropdown({
         <button
           type="button"
           className="border rounded px-3 py-1 bg-white text-black w-35"
-          onClick={toggleDropdown}
+          onClick={onToggle}
         >
           {selected}
         </button>

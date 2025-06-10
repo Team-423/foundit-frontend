@@ -55,6 +55,12 @@ export default function DropdownFilters({
     colours?: string;
   }>({});
 
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+
+  const handleToggleDropdown = (dropdownName: string) => {
+    setOpenDropdown(openDropdown === dropdownName ? null : dropdownName);
+  };
+
   const [selectedLocation, setSelectedLocation] = useState<{
     id: string;
     name: string;
@@ -198,6 +204,8 @@ export default function DropdownFilters({
             }
             label="Location"
             onSelectAction={handleLocationChange}
+            isOpen={openDropdown === "location"}
+            onToggle={() => handleToggleDropdown("location")}
           />
           <Dropdown
             options={
@@ -215,6 +223,8 @@ export default function DropdownFilters({
             }
             label="Category"
             onSelectAction={handleCategoryChange}
+            isOpen={openDropdown === "category"}
+            onToggle={() => handleToggleDropdown("category")}
           />
           <Dropdown
             options={
@@ -232,6 +242,8 @@ export default function DropdownFilters({
             }
             label="Brand"
             onSelectAction={handleBrandChange}
+            isOpen={openDropdown === "brand"}
+            onToggle={() => handleToggleDropdown("brand")}
           />
           <Dropdown
             options={
@@ -249,6 +261,8 @@ export default function DropdownFilters({
             }
             label="Colour"
             onSelectAction={handleColourChange}
+            isOpen={openDropdown === "colour"}
+            onToggle={() => handleToggleDropdown("colour")}
           />
         </div>
       </div>
