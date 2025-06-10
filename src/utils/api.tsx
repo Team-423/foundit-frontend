@@ -74,6 +74,7 @@ export const getCategories = async () => {
       }))
       .sort((a, b) => (a.category_name > b.category_name ? 1 : -1));
   } catch (error) {
+    console.error("Error fetching categories:", error);
     return "Failed to load categories. Please try again.";
   }
 };
@@ -88,6 +89,7 @@ export const getLocations = async () => {
       }))
       .sort((a, b) => (a.location_name > b.location_name ? 1 : -1));
   } catch (error) {
+    console.error("Error fetching locations:", error);
     return "Failed to load locations. Please try again.";
   }
 };
@@ -102,6 +104,7 @@ export const getBrands = async () => {
       }))
       .sort((a, b) => (a.brand_name > b.brand_name ? 1 : -1));
   } catch (error) {
+    console.error("Error fetching brands:", error);
     return "Failed to load brands. Please try again.";
   }
 };
@@ -116,6 +119,7 @@ export const getColours = async () => {
       }))
       .sort((a, b) => (a.colour > b.colour ? 1 : -1));
   } catch (error) {
+    console.error("Error fetching colours:", error);
     return "Failed to load colours. Please try again.";
   }
 };
