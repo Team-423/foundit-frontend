@@ -166,28 +166,35 @@ export default function DropdownFilters({
 
   return (
     <>
-      <div className="m-10 space-y-6">
-        <p>Please select your options:</p>
+      <div className="m-6 space-y-4">
         {(errors.categories ||
           errors.locations ||
           errors.brands ||
           errors.colours) && (
-          <div className="space-y-2">
+          <div className="space-y-2 bg-red-50 p-4 rounded-lg border border-red-200">
             {errors.categories && (
-              <p className="text-red-500 text-sm">{errors.categories}</p>
+              <p className="text-red-600 text-sm font-medium">
+                {errors.categories}
+              </p>
             )}
             {errors.locations && (
-              <p className="text-red-500 text-sm">{errors.locations}</p>
+              <p className="text-red-600 text-sm font-medium">
+                {errors.locations}
+              </p>
             )}
             {errors.brands && (
-              <p className="text-red-500 text-sm">{errors.brands}</p>
+              <p className="text-red-600 text-sm font-medium">
+                {errors.brands}
+              </p>
             )}
             {errors.colours && (
-              <p className="text-red-500 text-sm">{errors.colours}</p>
+              <p className="text-red-600 text-sm font-medium">
+                {errors.colours}
+              </p>
             )}
           </div>
         )}
-        <div className="flex justify-center gap-8 ">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-[#f0f8ff] rounded-xl shadow-md">
           <Dropdown
             options={
               isLoadingLocations
@@ -199,7 +206,7 @@ export default function DropdownFilters({
                     name: loc.location_name,
                   }))
             }
-            label="Location"
+            label="Location*"
             onSelectAction={handleLocationChange}
             isOpen={openDropdown === "location"}
             onToggle={() => handleToggleDropdown("location")}
@@ -215,7 +222,7 @@ export default function DropdownFilters({
                     name: cat.category_name,
                   }))
             }
-            label="Category"
+            label="Category*"
             onSelectAction={handleCategoryChange}
             isOpen={openDropdown === "category"}
             onToggle={() => handleToggleDropdown("category")}
