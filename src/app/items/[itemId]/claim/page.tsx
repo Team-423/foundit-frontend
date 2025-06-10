@@ -4,6 +4,7 @@
 import { useParams } from "next/navigation";
 import { getItemImgById, getQandA, patchQandA } from "../../../../utils/api";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import Loading from "../../../loading";
 
@@ -106,9 +107,9 @@ export default function Claim() {
               />
             </div>
           ))}
-          <div className="flex justify-center">
+          <div className="flex justify-center gap-x-6">
             <button
-              className={`bg-[#38A3A5] px-6 py-3 rounded-lg text-white font-medium text-lg shadow-md hover:bg-[#2d8a8c] transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+              className={`bg-[#38A3A5] px-6 py-3 rounded-lg text-white font-medium text-lg shadow-md hover:bg-[#2d8a8c] transition-colors disabled:opacity-50 ${
                 submitStatus === "submitting" || submitStatus === "submitted"
                   ? "cursor-not-allowed"
                   : ""
@@ -124,10 +125,17 @@ export default function Claim() {
                 ? "Submitted!"
                 : "Submit Claim"}
             </button>
+            {submitStatus === "submitted" ? (
+              <Link href="/chats">
+                <button className="bg-[#38A3A5] px-6 py-3 rounded-lg text-white font-medium text-lg shadow-md hover:bg-[#2d8a8c] transition-colors disabled:opacity-50">
+                  Chat to Finder
+                </button>
+              </Link>
+            ) : null}
           </div>
           {submitStatus === "submitted" && (
             <div className="mt-4 p-4 bg-green-50 text-green-700 rounded-lg text-center font-medium">
-              Your claim request has been sent to the item author.
+              Your claim request has been sent to the finder.
             </div>
           )}
         </form>
