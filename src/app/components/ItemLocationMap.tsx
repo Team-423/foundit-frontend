@@ -1,6 +1,5 @@
 "use client";
 
-import "leaflet/dist/leaflet.css";
 import { useEffect, useRef, useState } from "react";
 import {
   MapContainer,
@@ -100,7 +99,7 @@ function MapController({
       setPosition(selectedLocation);
       onSelect(selectedLocation);
     }
-  }, [selectedLocation]);
+  }, [selectedLocation, map, onSelect, setPosition]);
 
   return null;
 }
@@ -110,12 +109,18 @@ export default function ItemLocationMap({
   onSelect,
   onAddressSelect,
 }: LocationMapProps) {
+  type NominatimResult = {
+    display_name: string;
+    lat: string;
+    lon: string;
+  };
+
   // State
+  const [suggestions, setSuggestions] = useState<NominatimResult[]>([]);
   const [position, setPosition] = useState<{ lat: number; lng: number } | null>(
     null
   );
   const [query, setQuery] = useState("");
-  const [suggestions, setSuggestions] = useState<any[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<{
     lat: number;
     lng: number;
@@ -223,7 +228,7 @@ export default function ItemLocationMap({
   };
 
   // Handle suggestion click
-  const handleSuggestionClick = (suggestion: any) => {
+  const handleSuggestionClick = (suggestion: NominatimResult) => {
     shouldFetch.current = false;
     const coords = {
       lat: parseFloat(suggestion.lat),
@@ -283,7 +288,7 @@ export default function ItemLocationMap({
 
             <button
               onClick={handleSearchSubmit}
-              className="bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-orange-700"
+              className="bg-[#5a189a] text-white px-4 py-2 rounded-md hover:bg-[#3c096c]"
             >
               Search
             </button>

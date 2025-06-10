@@ -18,10 +18,10 @@ export default function Page() {
 
   // Callback function to receive filter changes from DropdownFilters
   const handleFiltersChange = (filters: {
-    location: string;
-    category: string;
-    brand: string;
-    colour: string;
+    location: { id: string; name: string };
+    category: { id: string; name: string };
+    brand: { id: string; name: string };
+    colour: { id: string; name: string };
   }) => {
     setCurrentFilters(filters);
     console.log("Filters updated:", filters);
@@ -40,22 +40,22 @@ export default function Page() {
     if (currentFilters.location) {
       if (queryString) queryString = queryString + "&";
       queryString =
-        queryString + `location=${encodeURIComponent(currentFilters.location)}`;
+        queryString + `location=${encodeURIComponent(currentFilters.location.id)}`;
     }
     if (currentFilters.category) {
       if (queryString) queryString = queryString + "&";
       queryString =
-        queryString + `category=${encodeURIComponent(currentFilters.category)}`;
+        queryString + `category=${encodeURIComponent(currentFilters.category.id)}`;
     }
     if (currentFilters.colour) {
       if (queryString) queryString = queryString + "&";
       queryString =
-        queryString + `colour=${encodeURIComponent(currentFilters.colour)}`;
+        queryString + `colour=${encodeURIComponent(currentFilters.colour.id)}`;
     }
     if (currentFilters.brand) {
       if (queryString) queryString = queryString + "&";
       queryString =
-        queryString + `brand=${encodeURIComponent(currentFilters.brand)}`;
+        queryString + `brand=${encodeURIComponent(currentFilters.brand.id)}`;
     }
 
     // Add search type (all, lost, found) to query string if not 'all'

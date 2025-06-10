@@ -4,11 +4,17 @@
 
 import { useState } from "react";
 
+interface Option {
+  id: string;
+  name: string;
+}
+
 type DropdownProps = {
-  options: string[];
+  options: Option[];
   label: string;
-  onSelectAction: (selected: string) => void;
+  onSelectAction: (selected: Option) => void;
 };
+
 export default function Dropdown({
   options,
   label,
@@ -21,9 +27,8 @@ export default function Dropdown({
     setIsOpen((currentState) => !currentState);
   };
 
-  const handleSelect = (option: string) => {
-    console.dir(option, "OPTIONNNNN");
-    setSelected(option);
+  const handleSelect = (option: Option) => {
+    setSelected(option.name);
     setIsOpen(false);
     onSelectAction(option);
   };
@@ -40,7 +45,7 @@ export default function Dropdown({
         </button>
 
         {isOpen && (
-          <div className="absolute mt-1 w-full rounded bg-gray-100 shadow z-10">
+          <div className="absolute mt-1 w-full rounded bg-gray-100 shadow z-10 max-h-60 overflow-y-scroll">
             {options.map((option, index) => (
               <button
                 key={index}
@@ -48,7 +53,7 @@ export default function Dropdown({
                 className="block w-full text-left px-3 py-1 text-black hover:bg-gray-300"
                 onClick={() => handleSelect(option)}
               >
-                {option}
+                {option.name}
               </button>
             ))}
           </div>
