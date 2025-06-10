@@ -10,10 +10,10 @@ export default function Page() {
   const [searchType, setSearchType] = useState("all"); // 'all', 'lost', 'found'
   const [currentFilters, setCurrentFilters] = useState({
     // State to hold filters from DropdownFilters
-    location: "",
-    category: "",
-    brand: "",
-    colour: "",
+    location: { id: "", name: "" },
+    category: { id: "", name: "" },
+    brand: { id: "", name: "" },
+    colour: { id: "", name: "" },
   });
 
   // Callback function to receive filter changes from DropdownFilters
@@ -40,12 +40,14 @@ export default function Page() {
     if (currentFilters.location) {
       if (queryString) queryString = queryString + "&";
       queryString =
-        queryString + `location=${encodeURIComponent(currentFilters.location.id)}`;
+        queryString +
+        `location=${encodeURIComponent(currentFilters.location.id)}`;
     }
     if (currentFilters.category) {
       if (queryString) queryString = queryString + "&";
       queryString =
-        queryString + `category=${encodeURIComponent(currentFilters.category.id)}`;
+        queryString +
+        `category=${encodeURIComponent(currentFilters.category.id)}`;
     }
     if (currentFilters.colour) {
       if (queryString) queryString = queryString + "&";
@@ -120,9 +122,7 @@ export default function Page() {
           </div>
 
           {/* Dropdown Filters Component */}
-          <DropdownFilters
-            handleFiltersChange={handleFiltersChange}
-          />
+          <DropdownFilters handleFiltersChange={handleFiltersChange} />
 
           {/* Search Button */}
           <button
@@ -132,7 +132,6 @@ export default function Page() {
             Search
           </button>
         </div>
-
 
         <div className="mt-12 w-full max-w-4xl">
           <ResolvedItemsCarousel />
