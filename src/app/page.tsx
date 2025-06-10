@@ -127,7 +127,14 @@ export default function Page() {
           {/* Search Button */}
           <button
             onClick={handleSearch}
-            className="w-full px-8 py-4 bg-[#168aad] text-[#f0f8ff] font-extrabold rounded-xl shadow-xl hover:bg-[#1e6091] focus:outline-none focus:ring-4 focus:ring-[#1e6091] focus:ring-opacity-75 transition-all duration-300 transform hover:scale-105 text-xl"
+            disabled={
+              !currentFilters.location.id || !currentFilters.category.id
+            }
+            className={`w-full px-8 py-4 font-extrabold rounded-xl shadow-xl transition-all duration-300 transform hover:scale-105 text-xl bg-[#168aad]  text-[#f0f8ff] hover:bg-[#1e6091] focus:outline-none focus:ring-4 focus:ring-[#1e6091] focus:ring-opacity-75 ${
+              !currentFilters.location.id || !currentFilters.category.id
+                ? "cursor-not-allowed"
+                : ""
+            }`}
           >
             Search
           </button>

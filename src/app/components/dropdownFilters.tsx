@@ -194,13 +194,10 @@ export default function DropdownFilters({
                 ? [{ id: "", name: "Loading..." }]
                 : errors.locations
                 ? [{ id: "", name: "Error loading locations" }]
-                : [
-                    { id: "", name: "All Location" },
-                    ...locations.map((loc) => ({
-                      id: loc._id,
-                      name: loc.location_name,
-                    })),
-                  ]
+                : locations.map((loc) => ({
+                    id: loc._id,
+                    name: loc.location_name,
+                  }))
             }
             label="Location"
             onSelectAction={handleLocationChange}
@@ -213,13 +210,10 @@ export default function DropdownFilters({
                 ? [{ id: "", name: "Loading..." }]
                 : errors.categories
                 ? [{ id: "", name: "Error loading categories" }]
-                : [
-                    { id: "", name: "All Category" },
-                    ...categories.map((cat) => ({
-                      id: cat._id,
-                      name: cat.category_name,
-                    })),
-                  ]
+                : categories.map((cat) => ({
+                    id: cat._id,
+                    name: cat.category_name,
+                  }))
             }
             label="Category"
             onSelectAction={handleCategoryChange}
