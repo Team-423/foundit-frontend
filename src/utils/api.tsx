@@ -46,7 +46,11 @@ interface QuestionAndAnswer {
 }
 
 interface GetQandAResponse {
-  questions: QuestionAndAnswer[];
+  questionAndAnswerPairs: QuestionAndAnswer[];
+}
+
+interface PatchQandAResponse {
+  questionAndAnswerPairs: QuestionAndAnswer[];
 }
 
 interface ItemImgResponse {
@@ -101,7 +105,15 @@ export const getColours = async () => {
 
 export const getQandA = async (item_id: string) => {
   const { data } = await itemsApi.get<GetQandAResponse>(`/${item_id}/QandA`);
-  return data.questions;
+  return data.questionAndAnswerPairs;
+};
+
+export const patchQandA = async (item_id: string, answers: string[]) => {
+  const { data } = await itemsApi.patch<PatchQandAResponse>(
+    `/${item_id}/QandA`,
+    { answers }
+  );
+  return data.questionAndAnswerPairs;
 };
 
 export const getItemImgById = async (item_id: string) => {
