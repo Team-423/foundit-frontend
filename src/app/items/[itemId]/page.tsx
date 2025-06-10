@@ -15,7 +15,7 @@ type Item = {
 };
 
 type ItemViewPageProps = {
-  params: { itemId: string };
+  params: Promise<{ itemId: string }>;
 };
 
 export default async function ItemViewPage({ params }: ItemViewPageProps) {
@@ -34,15 +34,19 @@ export default async function ItemViewPage({ params }: ItemViewPageProps) {
   return (
     <main className="max-w-2xl mx-auto mt-10 p-4 border rounded-xl shadow space-y-6">
       <header>
-        <h1 className="text-2xl font-bold text-center">Item Details: {itemById.title}</h1>
+        <h1 className="text-2xl font-bold text-center">
+          Item Details: {itemById.title}
+        </h1>
       </header>
 
       <article className="space-y-4">
         <section>
           <h2 className="block font-medium">Description</h2>
-          <p className="w-full border p-2 rounded bg-gray-50">{itemById.description}</p>
+          <p className="w-full border p-2 rounded bg-gray-50">
+            {itemById.description}
+          </p>
         </section>
-        
+
         <section>
           <h2 className="block font-medium">Status</h2>
           <p className="w-full border p-2 rounded bg-gray-50">
