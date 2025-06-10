@@ -1,6 +1,7 @@
 //path: /items/:itemId
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 type Item = {
   title: string;
@@ -69,10 +70,12 @@ export default async function ItemViewPage({ params }: ItemViewPageProps) {
 
         {itemById.img_url && (
           <figure className="w-full border p-2 rounded bg-gray-50">
-            <img
+            <Image
               src={itemById.img_url}
               alt={`Image of ${itemById.title}`}
               className="w-full rounded"
+              width="45"
+              height="45"
             />
             <figcaption className="text-center text-gray-500">
               {itemById.title}
