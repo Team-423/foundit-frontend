@@ -66,10 +66,12 @@ export default function PostLostItemPage() {
 
     const postedItem = {
       item_name: itemName,
-      author: "johndoe",
+      author: "maria.watson",
       category,
       description: details,
-      location: address,
+      location: "Manchester",
+      address,
+      coordinates: coords,
       colour,
       size,
       brand,
@@ -116,12 +118,16 @@ export default function PostLostItemPage() {
   };
 
   return (
-    <main className="max-w-2xl mx-auto mt-10 p-4 border rounded-xl shadow space-y-6">
-      <h1 className="text-2xl font-bold text-center">Post a Lost Item</h1>
+    <main className="max-w-2xl mx-auto mt-10 p-6 bg-white border border-gray-200 rounded-2xl shadow-lg space-y-6">
+      <h1 className="text-3xl font-bold text-center text-[#5a189a]">
+        Post a Lost Item
+      </h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block font-medium">Item Name</label>
+          <label className="block text-m font-medium text-gray-700 mb-1">
+            Item Name
+          </label>
           <input
             type="text"
             value={itemName}
@@ -132,7 +138,9 @@ export default function PostLostItemPage() {
         </div>
 
         <div>
-          <label className="block font-medium">Details</label>
+          <label className="block text-m font-medium text-gray-700 mb-1">
+            Details
+          </label>
           <textarea
             value={details}
             onChange={(e) => setDetails(e.target.value)}
@@ -142,7 +150,9 @@ export default function PostLostItemPage() {
         </div>
 
         <div>
-          <label className="block font-medium">Category</label>
+          <label className="block text-m font-medium text-gray-700 mb-1">
+            Category
+          </label>
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
@@ -159,7 +169,9 @@ export default function PostLostItemPage() {
         </div>
 
         <div>
-          <label className="block font-medium">Colour</label>
+          <label className="block text-m font-medium text-gray-700 mb-1">
+            Colour
+          </label>
           <select
             value={colour}
             onChange={(e) => setColour(e.target.value)}
@@ -176,7 +188,9 @@ export default function PostLostItemPage() {
         </div>
 
         <div>
-          <label className="block font-medium">Brand</label>
+          <label className="block text-m font-medium text-gray-700 mb-1">
+            Brand
+          </label>
           <select
             value={brand}
             onChange={(e) => setBrand(e.target.value)}
@@ -193,7 +207,9 @@ export default function PostLostItemPage() {
         </div>
 
         <div>
-          <label className="block font-medium">Size</label>
+          <label className="block text-m font-medium text-gray-700 mb-1">
+            Size
+          </label>
           <select
             value={size}
             onChange={(e) => setSize(e.target.value)}
@@ -209,7 +225,9 @@ export default function PostLostItemPage() {
           </select>
         </div>
         <div>
-          <label className="block font-medium">Material</label>
+          <label className="block text-m font-medium text-gray-700 mb-1">
+            Material
+          </label>
           <select
             value={material}
             onChange={(e) => setMaterial(e.target.value)}
@@ -225,23 +243,27 @@ export default function PostLostItemPage() {
           </select>
         </div>
 
-        <div>
-          <label className="block font-medium mb-2">Select Location</label>
+        <div className="p-3 border border-dashed border-gray-400 rounded-lg">
+          <label className="block text-sm font-medium mb-2 text-gray-700">
+            Select Location
+          </label>
           <ItemLocationMap onSelect={setCoords} onAddressSelect={setAddress} />
         </div>
 
         <button
           type="submit"
-          className="w-full bg-[#5a189a] text-white py-2 px-4 rounded hover:bg-[#3c096c]"
+          className="w-full bg-[#5a189a] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#3c096c] transition shadow-md"
         >
           Post Lost Item
         </button>
       </form>
 
       {success && (
-        <p className="text-green-600 text-center">Item posted successfully!</p>
+        <p className="text-green-600 text-center font-medium">
+          Item posted successfully!
+        </p>
       )}
-      {error && <p className="text-red-600 text-center">{error}</p>}
+      {error && <p className="text-red-600 text-center font-medium">{error}</p>}
     </main>
   );
 }
