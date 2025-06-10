@@ -13,8 +13,14 @@ export default function Claim() {
   const [QsandAs, setQsandAs] = useState<object[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const [answers, setAnswers] = useState<string[]>(["", "", ""]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [answerFromSeeker, setAnswerFromSeeker] = useState<string[]>([
+    "",
+    "",
+    "",
+  ]);
+  const [submitStatus, setSubmitStatus] = useState<
+    "submitting" | "submitted" | null
+  >(null);
 
   useEffect(() => {
     setIsLoading(true);
@@ -26,7 +32,7 @@ export default function Claim() {
         setQsandAs(qaData);
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching item data:", error);
         setIsError(true);
       })
       .finally(() => {
@@ -35,27 +41,26 @@ export default function Claim() {
   }, [itemId]);
 
   const handleAnswerChange = (index: number, value: string) => {
-    const newAnswers = [...answers];
+    const newAnswers = [...answerFromSeeker];
     newAnswers[index] = value;
-    setAnswers(newAnswers);
+    setAnswerFromSeeker(newAnswers);
   };
-
-  console.log(answers);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    setSubmitStatus("submitting");
 
-    patchQandA(itemId as string, answers)
+    patchQandA(itemId as string, answerFromSeeker)
       .then((res) => {
         console.log(res, "<<<<<after patching");
+        //maybe send email
       })
       .catch((error) => {
-        console.error("Error submitting answers:", error);
+        console.error("Error submitting claim:", error);
         setIsError(true);
       })
       .finally(() => {
-        setIsSubmitting(false);
+        setSubmitStatus("submitted");
       });
   };
 
@@ -89,18 +94,28 @@ export default function Claim() {
               type="text"
               className="border p-2 w-full"
               placeholder="Your answer"
-              value={answers[index]}
+              value={answerFromSeeker[index]}
               onChange={(e) => handleAnswerChange(index, e.target.value)}
               required
             />
           </div>
         ))}
         <button
-          className="bg-[#38A3A5] p-2 rounded text-white disabled:opacity-50"
+          className={`bg-[#38A3A5] p-2 rounded text-white disabled:opacity-50 ${
+            submitStatus === "submitting" || submitStatus === "submitted"
+              ? "cursor-not-allowed"
+              : ""
+          }`}
           type="submit"
-          disabled={isSubmitting}
+          disabled={
+            submitStatus === "submitting" || submitStatus === "submitted"
+          }
         >
-          {isSubmitting ? "Submitting..." : "Submit Claim"}
+          {submitStatus === "submitting"
+            ? "Submitting..."
+            : submitStatus === "submitted"
+            ? "Submitted!"
+            : "Submit Claim"}
         </button>
       </form>
     </div>
