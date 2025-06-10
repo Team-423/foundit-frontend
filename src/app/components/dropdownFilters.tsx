@@ -72,13 +72,50 @@ export default function DropdownFilters({
     name: string;
   }>({ id: "", name: "" });
 
-  const handleSubmit = () => {
+  const handleLocationChange = (location: { id: string; name: string }) => {
+    setSelectedLocation(location);
+    if (handleFiltersChange) {
+      handleFiltersChange({
+        location,
+        category: selectedCategory,
+        brand: selectedBrand,
+        colour: selectedColour,
+      });
+    }
+  };
+
+  const handleCategoryChange = (category: { id: string; name: string }) => {
+    setSelectedCategory(category);
+    if (handleFiltersChange) {
+      handleFiltersChange({
+        location: selectedLocation,
+        category,
+        brand: selectedBrand,
+        colour: selectedColour,
+      });
+    }
+  };
+
+  const handleBrandChange = (brand: { id: string; name: string }) => {
+    setSelectedBrand(brand);
+    if (handleFiltersChange) {
+      handleFiltersChange({
+        location: selectedLocation,
+        category: selectedCategory,
+        brand,
+        colour: selectedColour,
+      });
+    }
+  };
+
+  const handleColourChange = (colour: { id: string; name: string }) => {
+    setSelectedColour(colour);
     if (handleFiltersChange) {
       handleFiltersChange({
         location: selectedLocation,
         category: selectedCategory,
         brand: selectedBrand,
-        colour: selectedColour,
+        colour,
       });
     }
   };
@@ -151,13 +188,16 @@ export default function DropdownFilters({
                 ? [{ id: "", name: "Loading..." }]
                 : errors.locations
                 ? [{ id: "", name: "Error loading locations" }]
-                : locations.map((loc) => ({
-                    id: loc._id,
-                    name: loc.location_name,
-                  }))
+                : [
+                    { id: "", name: "All Location" },
+                    ...locations.map((loc) => ({
+                      id: loc._id,
+                      name: loc.location_name,
+                    })),
+                  ]
             }
             label="Location"
-            onSelectAction={setSelectedLocation}
+            onSelectAction={handleLocationChange}
           />
           <Dropdown
             options={
@@ -165,13 +205,16 @@ export default function DropdownFilters({
                 ? [{ id: "", name: "Loading..." }]
                 : errors.categories
                 ? [{ id: "", name: "Error loading categories" }]
-                : categories.map((cat) => ({
-                    id: cat._id,
-                    name: cat.category_name,
-                  }))
+                : [
+                    { id: "", name: "All Category" },
+                    ...categories.map((cat) => ({
+                      id: cat._id,
+                      name: cat.category_name,
+                    })),
+                  ]
             }
             label="Category"
-            onSelectAction={setSelectedCategory}
+            onSelectAction={handleCategoryChange}
           />
           <Dropdown
             options={
@@ -179,13 +222,16 @@ export default function DropdownFilters({
                 ? [{ id: "", name: "Loading..." }]
                 : errors.brands
                 ? [{ id: "", name: "Error loading brands" }]
-                : brands.map((brand) => ({
-                    id: brand._id,
-                    name: brand.brand_name,
-                  }))
+                : [
+                    { id: "", name: "All Brand" },
+                    ...brands.map((brand) => ({
+                      id: brand._id,
+                      name: brand.brand_name,
+                    })),
+                  ]
             }
             label="Brand"
-            onSelectAction={setSelectedBrand}
+            onSelectAction={handleBrandChange}
           />
           <Dropdown
             options={
@@ -193,22 +239,17 @@ export default function DropdownFilters({
                 ? [{ id: "", name: "Loading..." }]
                 : errors.colours
                 ? [{ id: "", name: "Error loading colours" }]
-                : colours.map((colour) => ({
-                    id: colour._id,
-                    name: colour.colour,
-                  }))
+                : [
+                    { id: "", name: "All Colour" },
+                    ...colours.map((colour) => ({
+                      id: colour._id,
+                      name: colour.colour,
+                    })),
+                  ]
             }
             label="Colour"
-            onSelectAction={setSelectedColour}
+            onSelectAction={handleColourChange}
           />
-
-          <button
-            className="bg-[#38A3A5] rounded alig-center w-35 font-bold"
-            onClick={handleSubmit}
-            disabled={!selectedLocation.id || !selectedCategory.id}
-          >
-            Search
-          </button>
         </div>
       </div>
     </>
