@@ -6,8 +6,8 @@ import DropdownFilters from "./components/dropdownFilters";
 import ResolvedItemsCarousel from "./components/ResolvedItemsCarousel";
 
 export default function Page() {
-  const [searchInput, setSearchInput] = useState("");
-  const [searchType, setSearchType] = useState("all"); // 'all', 'lost', 'found'
+  const [searchInput, setSearchInput] = useState<string>("");
+  const [searchType, setSearchType] = useState<"all" | "lost" | "found">("all");
   const [currentFilters, setCurrentFilters] = useState({
     // State to hold filters from DropdownFilters
     location: { id: "", name: "" },
@@ -90,9 +90,6 @@ export default function Page() {
               placeholder="Search by item name..."
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              onKeyPress={(e) => {
-                if (e.key === "Enter") handleSearch(e);
-              }}
               className="w-full p-4 border border-[#168aad] rounded-lg shadow-sm focus:outline-none focus:ring-4 focus:ring-[#1e6091] text-lg"
             />
           </div>
@@ -100,10 +97,10 @@ export default function Page() {
           {/* Item Type Buttons */}
           <div className="flex justify-center space-x-4">
             <button
-              onClick={() => setSearchType("all")}
-              className={`px-6 py-3 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-md ${
-                searchType === "all"
-                  ? "bg-[#1e6091] text-[#f0f8ff] ring-2 ring-[#168aad]"
+              onClick={() => setSearchType("lost")}
+              className={`px-4 py-2 rounded-lg font-medium text-base transition-all duration-300 transform hover:scale-105 shadow-md ${
+                searchType === "lost"
+                  ? "bg-[#1e6091] text-white ring-4 ring-[#168aad] scale-105 shadow-lg"
                   : "bg-[#184e77] text-[#f0f8ff] hover:bg-[#1e6091]"
               }`}
             >
@@ -111,9 +108,9 @@ export default function Page() {
             </button>
             <button
               onClick={() => setSearchType("found")}
-              className={`px-6 py-3 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-md ${
+              className={`px-4 py-2 rounded-lg font-medium text-base transition-all duration-300 transform hover:scale-105 shadow-md ${
                 searchType === "found"
-                  ? "bg-[#57cc99] text-[#22577a] ring-2 ring-[#76c893]"
+                  ? "bg-[#57cc99] text-[#22577a] ring-4 ring-[#76c893] scale-105 shadow-lg"
                   : "bg-[#80ed99] text-[#22577a] hover:bg-[#57cc99]"
               }`}
             >
