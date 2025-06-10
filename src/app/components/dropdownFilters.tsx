@@ -48,57 +48,12 @@ export default function DropdownFilters({
   const [isLoadingLocations, setIsLoadingLocations] = useState(true);
   const [isLoadingBrands, setIsLoadingBrands] = useState(true);
   const [isLoadingColours, setIsLoadingColours] = useState(true);
-  const [isError, setIsError] = useState(false);
-
-  useEffect(() => {
-    getCategories()
-      .then((categoryData) => {
-        setCategories(categoryData);
-      })
-      .catch((error) => {
-        console.error("Error fetching categories:", error);
-        setIsError(true);
-      })
-      .finally(() => {
-        setIsLoadingCategories(false);
-      });
-
-    getLocations()
-      .then((locationData) => {
-        setLocations(locationData);
-      })
-      .catch((error) => {
-        console.error("Error fetching locations:", error);
-        setIsError(true);
-      })
-      .finally(() => {
-        setIsLoadingLocations(false);
-      });
-
-    getBrands()
-      .then((brandData) => {
-        setBrands(brandData);
-      })
-      .catch((error) => {
-        console.error("Error fetching brands:", error);
-        setIsError(true);
-      })
-      .finally(() => {
-        setIsLoadingBrands(false);
-      });
-
-    getColours()
-      .then((colourData) => {
-        setColours(colourData);
-      })
-      .catch((error) => {
-        console.error("Error fetching colours:", error);
-        setIsError(true);
-      })
-      .finally(() => {
-        setIsLoadingColours(false);
-      });
-  }, []);
+  const [errors, setErrors] = useState<{
+    categories?: string;
+    locations?: string;
+    brands?: string;
+    colours?: string;
+  }>({});
 
   const [selectedLocation, setSelectedLocation] = useState<{
     id: string;
@@ -128,20 +83,74 @@ export default function DropdownFilters({
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const categoryData = await getCategories();
+      if (typeof categoryData === "string") {
+        setErrors((prev) => ({ ...prev, categories: categoryData }));
+      } else {
+        setCategories(categoryData);
+      }
+      setIsLoadingCategories(false);
+
+      const locationData = await getLocations();
+      if (typeof locationData === "string") {
+        setErrors((prev) => ({ ...prev, locations: locationData }));
+      } else {
+        setLocations(locationData);
+      }
+      setIsLoadingLocations(false);
+
+      const brandData = await getBrands();
+      if (typeof brandData === "string") {
+        setErrors((prev) => ({ ...prev, brands: brandData }));
+      } else {
+        setBrands(brandData);
+      }
+      setIsLoadingBrands(false);
+
+      const colourData = await getColours();
+      if (typeof colourData === "string") {
+        setErrors((prev) => ({ ...prev, colours: colourData }));
+      } else {
+        setColours(colourData);
+      }
+      setIsLoadingColours(false);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <>
       <div className="m-10 space-y-6">
         <p>Please select your options:</p>
-        {isError && (
-          <p className="text-red-500 text-sm">
-            Failed to load some filters. Please refresh the page.
-          </p>
+        {(errors.categories ||
+          errors.locations ||
+          errors.brands ||
+          errors.colours) && (
+          <div className="space-y-2">
+            {errors.categories && (
+              <p className="text-red-500 text-sm">{errors.categories}</p>
+            )}
+            {errors.locations && (
+              <p className="text-red-500 text-sm">{errors.locations}</p>
+            )}
+            {errors.brands && (
+              <p className="text-red-500 text-sm">{errors.brands}</p>
+            )}
+            {errors.colours && (
+              <p className="text-red-500 text-sm">{errors.colours}</p>
+            )}
+          </div>
         )}
         <div className="flex justify-center gap-8 ">
           <Dropdown
             options={
               isLoadingLocations
                 ? [{ id: "", name: "Loading..." }]
+                : errors.locations
+                ? [{ id: "", name: "Error loading locations" }]
                 : locations.map((loc) => ({
                     id: loc._id,
                     name: loc.location_name,
@@ -154,6 +163,8 @@ export default function DropdownFilters({
             options={
               isLoadingCategories
                 ? [{ id: "", name: "Loading..." }]
+                : errors.categories
+                ? [{ id: "", name: "Error loading categories" }]
                 : categories.map((cat) => ({
                     id: cat._id,
                     name: cat.category_name,
@@ -166,6 +177,8 @@ export default function DropdownFilters({
             options={
               isLoadingBrands
                 ? [{ id: "", name: "Loading..." }]
+                : errors.brands
+                ? [{ id: "", name: "Error loading brands" }]
                 : brands.map((brand) => ({
                     id: brand._id,
                     name: brand.brand_name,
@@ -178,6 +191,8 @@ export default function DropdownFilters({
             options={
               isLoadingColours
                 ? [{ id: "", name: "Loading..." }]
+                : errors.colours
+                ? [{ id: "", name: "Error loading colours" }]
                 : colours.map((colour) => ({
                     id: colour._id,
                     name: colour.colour,
