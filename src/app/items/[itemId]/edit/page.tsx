@@ -34,7 +34,6 @@ export default function EditItemForm() {
     async function loadData() {
       try {
         const itemData = await getItemById(String(itemId));
-        console.log(itemData);
         setItemDetailsInput(itemData);
       } catch (err) {
         console.error(err);
@@ -53,13 +52,8 @@ export default function EditItemForm() {
   };
 
   const handleUpdate = async () => {
-    try {
-      await updateItemById(String(itemId), itemDetailsInput);
+      const updatedItem = await updateItemById(String(itemId), itemDetailsInput);
       alert("Updated successfully");
-    } catch (err) {
-      alert("Failed to update");
-      console.log(err);
-    }
   };
 
   return (

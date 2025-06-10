@@ -176,6 +176,13 @@ export const updateItemById = async (
   itemId: string,
   updatedData: UpdateItemData
 ) => {
-  const { data } = await axios.patch(`/items/${itemId}`, updatedData);
-  return data.itemById;
+  const formattedData = {
+    ...updatedData,
+    location: updatedData.location?.id,
+    category: updatedData.category?.id,
+    brand: updatedData.brand?.id,
+    colour: updatedData.colour?.id,
+  }
+  const { data } = await itemsApi.patch(`/${itemId}`, formattedData);
+  return data.updatedItem;
 };
