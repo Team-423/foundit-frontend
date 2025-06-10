@@ -1,13 +1,13 @@
 // route "/"
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DropdownFilters from "./components/dropdownFilters";
 import ResolvedItemsCarousel from "./components/ResolvedItemsCarousel";
 
 export default function Page() {
   const [searchInput, setSearchInput] = useState<string>("");
-  const [searchType, setSearchType] = useState<"all" | "lost" | "found">("all");
+  const [searchType, setSearchType] = useState<"lost" | "found" | null>(null);
   const [currentFilters, setCurrentFilters] = useState({
     // State to hold filters from DropdownFilters
     location: { id: "", name: "" },
@@ -15,6 +15,15 @@ export default function Page() {
     brand: { id: "", name: "" },
     colour: { id: "", name: "" },
   });
+
+  // Log complete search state
+  useEffect(() => {
+    console.log("Queries:", {
+      searchInput,
+      searchType,
+      filters: currentFilters,
+    });
+  }, [searchInput, searchType, currentFilters]);
 
   // Callback function to receive filter changes from DropdownFilters
   const handleFiltersChange = (filters: {
@@ -24,7 +33,6 @@ export default function Page() {
     colour: { id: string; name: string };
   }) => {
     setCurrentFilters(filters);
-    console.log("Filters updated:", filters);
   };
 
   const handleSearch = (event: React.FormEvent | React.KeyboardEvent) => {
@@ -61,7 +69,7 @@ export default function Page() {
     }
 
     // Add search type (all, lost, found) to query string if not 'all'
-    if (searchType !== "all") {
+    if (searchType !== null) {
       if (queryString) queryString = queryString + "&";
       queryString = queryString + `type=${encodeURIComponent(searchType)}`;
     }
@@ -95,23 +103,23 @@ export default function Page() {
           </div>
 
           {/* Item Type Buttons */}
-          <div className="flex justify-center space-x-4">
+          <div className="flex justify-center space-x-10">
             <button
               onClick={() => setSearchType("lost")}
-              className={`px-4 py-2 rounded-lg font-medium text-base transition-all duration-300 transform hover:scale-105 shadow-md ${
+              className={`px-4 py-2 rounded-lg font-medium text-[#f0f8ff] text-base transition-all duration-300 transform hover:scale-110 shadow-md hover:bg-[#1e6091] ${
                 searchType === "lost"
-                  ? "bg-[#1e6091] text-white ring-4 ring-[#168aad] scale-105 shadow-lg"
-                  : "bg-[#184e77] text-[#f0f8ff] hover:bg-[#1e6091]"
+                  ? "bg-[#284d68] scale-110 shadow-lg"
+                  : "bg-[#168aad] hover:scale-110 "
               }`}
             >
               Lost Items
             </button>
             <button
               onClick={() => setSearchType("found")}
-              className={`px-4 py-2 rounded-lg font-medium text-base transition-all duration-300 transform hover:scale-105 shadow-md ${
+              className={`px-4 py-2 rounded-lg font-medium text-[#f0f8ff] text-base transition-all duration-300 transform hover:scale-110 shadow-md hover:bg-[#1e6091] ${
                 searchType === "found"
-                  ? "bg-[#57cc99] text-[#22577a] ring-4 ring-[#76c893] scale-105 shadow-lg"
-                  : "bg-[#80ed99] text-[#22577a] hover:bg-[#57cc99]"
+                  ? "bg-[#284d68] scale-110 shadow-lg"
+                  : "bg-[#168aad] hover:scale-110 "
               }`}
             >
               Found Items
