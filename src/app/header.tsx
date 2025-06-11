@@ -51,16 +51,16 @@ const Header = () => {
           <Link
             href={isLoggedIn ? "/postLostItem" : "/guest"}
             onClick={(event) => handlePostItemClick(event)}
-            className="w-full sm:w-[160px] text-center px-4 py-2 rounded-md bg-[#168aad] text-white hover:bg-[#1e6091] transition font-bold"
+            className="group w-full sm:w-[200px] text-center px-4 py-2 rounded-md bg-[#168aad] text-white hover:bg-[#1e6091] transition font-bold"
           >
-            Post Lost Item
+            Post <span className="group-hover:underline">Lost</span> Item
           </Link>
           <Link
             href={isLoggedIn ? "/postFoundItem" : "/guest"}
             onClick={(event) => handlePostItemClick(event)}
-            className="w-full sm:w-[160px] text-center px-4 py-2 rounded-md bg-[#168aad] text-white hover:bg-[#1e6091] transition font-bold"
+            className="group w-full sm:w-[200px] text-center px-4 py-2 rounded-md bg-[#168aad] text-white hover:bg-[#1e6091] transition font-bold"
           >
-            Post Found Item
+            Post <span className="group-hover:underline">Found</span> Item
           </Link>
         </nav>
 
