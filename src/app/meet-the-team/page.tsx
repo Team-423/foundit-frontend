@@ -70,7 +70,7 @@ export default function MeetTheTeam() {
             height={75}
           />
           <p className="text-sm text-gray-600 mt-2 text-center">
-            Team 423 Locked In is a proud and powerful pack of seven creative developers. We're dedicated to building secure, innovative solutions, always keeping user data "locked in." Our name, linked to the HTTP 423 "Locked" status code, directly reflects this core promise. Like a friendly wolfpack, we unite to protect and innovate, ensuring trust in every project.
+            {`Team 423 Locked In is a proud and powerful pack of seven creative developers. We're dedicated to building secure, innovative solutions, always keeping user data "locked in." Our name, linked to the HTTP 423 "Locked" status code, directly reflects this core promise. Like a friendly wolfpack, we unite to protect and innovate, ensuring trust in every project.`}
           </p>
         </div>
       </div>
