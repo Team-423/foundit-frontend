@@ -1,6 +1,5 @@
 "use client";
 
-import "leaflet/dist/leaflet.css";
 import { useEffect, useRef, useState } from "react";
 import {
   MapContainer,
@@ -107,7 +106,7 @@ function MapController({
       setPosition(selectedLocation);
       onSelect(selectedLocation);
     }
-  }, [selectedLocation, map, setPosition, onSelect]);
+  }, [selectedLocation, map, onSelect, setPosition]);
 
   return null;
 }
@@ -117,12 +116,18 @@ export default function ItemLocationMap({
   onSelect,
   onAddressSelect,
 }: LocationMapProps) {
+  type NominatimResult = {
+    display_name: string;
+    lat: string;
+    lon: string;
+  };
+
   // State
+  const [suggestions, setSuggestions] = useState<NominatimResult[]>([]);
   const [position, setPosition] = useState<{ lat: number; lng: number } | null>(
     null
   );
   const [query, setQuery] = useState("");
-  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<{
     lat: number;
     lng: number;
@@ -230,7 +235,7 @@ export default function ItemLocationMap({
   };
 
   // Handle suggestion click
-  const handleSuggestionClick = (suggestion: Suggestion) => {
+  const handleSuggestionClick = (suggestion: NominatimResult) => {
     shouldFetch.current = false;
     const coords = {
       lat: parseFloat(suggestion.lat),

@@ -1,7 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import ItemLocationMap from "../components/ItemLocationMap";
+import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import {
+  getCategories,
+  getColours,
+  getBrands,
+  getLocations,
+} from "../../utils/api";
+
+const ItemLocationMap = dynamic(() => import("../components/ItemLocationMap"), {
+  ssr: false,
+});
 
 export default function PostLostItemPage() {
   const [itemName, setItemName] = useState("");
@@ -11,8 +21,70 @@ export default function PostLostItemPage() {
   );
   const [address, setAddress] = useState<string | null>(null);
 
+  const [category, setCategory] = useState("");
+  const [colour, setColour] = useState("");
+  const [brand, setBrand] = useState("");
+  const [size, setSize] = useState("");
+  const [material, setMaterial] = useState("");
+  const [location, setLocation] = useState("");
+
+  const [categoryOptions, setCategoryOptions] = useState<
+    { _id: string; category_name: string }[]
+  >([]);
+  const [colourOptions, setColourOptions] = useState<
+    { _id: string; colour: string }[]
+  >([]);
+  const [brandOptions, setBrandOptions] = useState<
+    { _id: string; brand_name: string }[]
+  >([]);
+  const [locationOptions, setLocationOptions] = useState<
+    { _id: string; location_name: string }[]
+  >([]);
+
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+
+  const sizeOptions = ["One Size", "Small", "Medium", "Large", "Extra Large"];
+  const materialOptions = [
+    "Leather",
+    "Fabric",
+    "Metal",
+    "Plastic",
+    "Paper",
+    "Other",
+  ];
+
+  useEffect(() => {
+    const fetchOptions = async () => {
+      const categories = await getCategories();
+      if (typeof categories === "string") {
+        console.error(categories); // or set an error state if you want
+      } else {
+        setCategoryOptions(categories);
+      }
+
+      const colours = await getColours();
+      if (typeof colours === "string") {
+        console.error(colours);
+      } else {
+        setColourOptions(colours);
+      }
+
+      const brands = await getBrands();
+      if (typeof brands === "string") {
+        console.error(brands);
+      } else {
+        setBrandOptions(brands);
+      }
+      const locations = await getLocations();
+      if (typeof locations === "string") {
+        console.error(locations);
+      } else {
+        setLocationOptions(locations);
+      }
+    };
+    fetchOptions();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,15 +97,17 @@ export default function PostLostItemPage() {
     }
 
     const postedItem = {
-      item_name: "Black Walle",
-      author: "johndoe",
-      category: "Accessories",
-      description: "Leather wallet containing ID and credit cards",
-      location: "Manchester",
-      colour: "Black",
-      size: "Small",
-      brand: "Fossil",
-      material: "Leather",
+      item_name: itemName,
+      author: "maria.watson",
+      category,
+      description: details,
+      location,
+      address,
+      coordinates: coords,
+      colour,
+      size,
+      brand,
+      material,
       img_url:
         "https://cdn.pixabay.com/photo/2020/03/28/13/26/wallet-4977021_1280.jpg",
       resolved: false,
@@ -61,18 +135,32 @@ export default function PostLostItemPage() {
       setDetails("");
       setCoords(null);
       setAddress(null);
-    } catch (err: any) {
-      setError(err.message);
+      setCategory("");
+      setColour("");
+      setBrand("");
+      setSize("");
+      setMaterial("");
+      setLocation("");
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred.");
+      }
     }
   };
 
   return (
-    <main className="max-w-2xl mx-auto mt-10 p-4 border rounded-xl shadow space-y-6">
-      <h1 className="text-2xl font-bold text-center">Post a Lost Item</h1>
+    <main className="max-w-2xl mx-auto mt-10 p-6 bg-white border border-gray-200 rounded-2xl shadow-lg space-y-6">
+      <h1 className="text-3xl font-bold text-center text-[#5a189a]">
+        Post a Lost Item
+      </h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block font-medium">Item Name</label>
+          <label className="block text-m font-medium text-gray-700 mb-1">
+            Item Name
+          </label>
           <input
             type="text"
             value={itemName}
@@ -83,7 +171,9 @@ export default function PostLostItemPage() {
         </div>
 
         <div>
-          <label className="block font-medium">Details</label>
+          <label className="block text-m font-medium text-gray-700 mb-1">
+            Details
+          </label>
           <textarea
             value={details}
             onChange={(e) => setDetails(e.target.value)}
@@ -93,22 +183,139 @@ export default function PostLostItemPage() {
         </div>
 
         <div>
-          <label className="block font-medium mb-2">Select Location</label>
+          <label className="block text-m font-medium text-gray-700 mb-1">
+            Location
+          </label>
+          <select
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            required
+            className="w-full border p-2 rounded"
+          >
+            <option value="">Select a location</option>
+            {locationOptions.map((loc) => (
+              <option key={loc._id} value={loc.location_name}>
+                {loc.location_name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-m font-medium text-gray-700 mb-1">
+            Category
+          </label>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            required
+            className="w-full border p-2 rounded"
+          >
+            <option value="">Select a category</option>
+            {categoryOptions.map((cat) => (
+              <option key={cat._id} value={cat.category_name}>
+                {cat.category_name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-m font-medium text-gray-700 mb-1">
+            Colour
+          </label>
+          <select
+            value={colour}
+            onChange={(e) => setColour(e.target.value)}
+            required
+            className="w-full border p-2 rounded"
+          >
+            <option value="">Select a colour</option>
+            {colourOptions.map((col) => (
+              <option key={col._id} value={col.colour}>
+                {col.colour}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-m font-medium text-gray-700 mb-1">
+            Brand
+          </label>
+          <select
+            value={brand}
+            onChange={(e) => setBrand(e.target.value)}
+            required
+            className="w-full border p-2 rounded"
+          >
+            <option value="">Select a brand</option>
+            {brandOptions.map((br) => (
+              <option key={br._id} value={br.brand_name}>
+                {br.brand_name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-m font-medium text-gray-700 mb-1">
+            Size
+          </label>
+          <select
+            value={size}
+            onChange={(e) => setSize(e.target.value)}
+            required
+            className="w-full border p-2 rounded"
+          >
+            <option value="">Select a size</option>
+            {sizeOptions.map((sz) => (
+              <option key={sz} value={sz}>
+                {sz}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="block text-m font-medium text-gray-700 mb-1">
+            Material
+          </label>
+          <select
+            value={material}
+            onChange={(e) => setMaterial(e.target.value)}
+            required
+            className="w-full border p-2 rounded"
+          >
+            <option value="">Select a material</option>
+            {materialOptions.map((mat) => (
+              <option key={mat} value={mat}>
+                {mat}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="p-3 border border-dashed border-gray-400 rounded-lg">
+          <label className="block text-sm font-medium mb-2 text-gray-700">
+            Select Location
+          </label>
           <ItemLocationMap onSelect={setCoords} onAddressSelect={setAddress} />
         </div>
 
         <button
           type="submit"
-          className="w-full bg-[#5a189a] text-white py-2 px-4 rounded hover:bg-[#3c096c]"
+          className="w-full bg-[#5a189a] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#3c096c] transition shadow-md"
         >
           Post Lost Item
         </button>
       </form>
 
       {success && (
-        <p className="text-green-600 text-center">Item posted successfully!</p>
+        <p className="text-green-600 text-center font-medium">
+          Item posted successfully!
+        </p>
       )}
-      {error && <p className="text-red-600 text-center">{error}</p>}
+      {error && <p className="text-red-600 text-center font-medium">{error}</p>}
     </main>
   );
 }

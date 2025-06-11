@@ -2,106 +2,103 @@
 "use client";
 
 import Dropdown from "./dropdown";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import {
+  getCategories,
+  getLocations,
+  getBrands,
+  getColours,
+} from "../../utils/api";
 
 interface Location {
+  _id: string;
   location_name: string;
 }
+
 interface Category {
+  _id: string;
   category_name: string;
 }
+
 interface Brand {
+  _id: string;
   brand_name: string;
 }
+
 interface Colour {
+  _id: string;
   colour: string;
 }
 
 export default function DropdownFilters({
-  handleFiltersChange,
+  handleFiltersChange, selectedFilters
 }: {
   handleFiltersChange?: (filters: {
-    location: string;
-    category: string;
-    brand: string;
-    colour: string;
+    location: { id: string; name: string };
+    category: { id: string; name: string };
+    brand: { id: string; name: string };
+    colour: { id: string; name: string };
   }) => void;
+  selectedFilters?: {
+    location: { id: string; name: string };
+    category: { id: string; name: string };
+    brand: { id: string; name: string };
+    colour: { id: string; name: string };
+  };
 }) {
-  //fetching from four endpoints: location, category, brand, colour
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [locations, setLocations] = useState<Location[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
+  const [colours, setColours] = useState<Colour[]>([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+  const [isLoadingLocations, setIsLoadingLocations] = useState(true);
+  const [isLoadingBrands, setIsLoadingBrands] = useState(true);
+  const [isLoadingColours, setIsLoadingColours] = useState(true);
 
-  //hardcoded, replace by axios once BE endpoint rendering is ready
-  //GET /api/items/locations
-  const locations: Location[] = [
-    { location_name: "Other" },
-    { location_name: "London" },
-    { location_name: "Birmingham" },
-    { location_name: "Manchester" },
-    { location_name: "Glasgow" },
-    { location_name: "Liverpool" },
-    { location_name: "Leeds" },
-    { location_name: "Sheffield" },
-    { location_name: "Bristol" },
-    { location_name: "Newcastle upon Tyne" },
-    { location_name: "Nottingham" },
-    { location_name: "Leicester" },
-    { location_name: "Coventry" },
-    { location_name: "Kingston upon Hull" },
-    { location_name: "Bradford" },
-  ];
-  //GET /api/items/categories
-  const categories: Category[] = [
-    { category_name: "Accessories" },
-    { category_name: "Bags" },
-    { category_name: "Clothing" },
-    { category_name: "Footwear" },
-    { category_name: "Electronics" },
-    { category_name: "Jewelry" },
-    { category_name: "Keys" },
-    { category_name: "Outdoor Gear" },
-    { category_name: "Books" },
-    { category_name: "Documents & IDs" },
-    { category_name: "Eyewear" },
-    { category_name: "Home Goods & Decor" },
-    { category_name: "Outdoor Gear" },
-    { category_name: "Toys & Games" },
-    { category_name: "Other" },
-  ];
-  //GET /api/items/brands
-  const brands: Brand[] = [
-    { brand_name: "Other/Unknown" },
-    { brand_name: "Apple" },
-    { brand_name: "Samsung" },
-    { brand_name: "Sony" },
-    { brand_name: "Dell" },
-    { brand_name: "HP" },
-    { brand_name: "Lenovo" },
-    { brand_name: "Microsoft" },
-    { brand_name: "Asus" },
-  ];
-  //GET /api/items/colours
-  const colour: Colour[] = [
-    { colour: "Black" },
-    { colour: "White" },
-    { colour: "Grey" },
-    { colour: "Silver" },
-    { colour: "Gold" },
-    { colour: "Red" },
-    { colour: "Blue" },
-    { colour: "Green" },
-    { colour: "Yellow" },
-    { colour: "Orange" },
-    { colour: "Purple" },
-  ];
+  const [errors, setErrors] = useState<{
+    categories?: string;
+    locations?: string;
+    brands?: string;
+    colours?: string;
+  }>({});
 
-  const [selectedLocation, setSelectedLocation] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedBrand, setSelectedBrand] = useState("");
-  const [selectedColour, setSelectedColour] = useState("");
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
-  const handleSubmit = () => {
+  const handleToggleDropdown = (dropdownName: string) => {
+    setOpenDropdown(openDropdown === dropdownName ? null : dropdownName);
+  };
+
+  const [selectedLocation, setSelectedLocation] = useState<{
+    id: string;
+    name: string;
+  }>({ id: "", name: "" });
+  const [selectedCategory, setSelectedCategory] = useState<{
+    id: string;
+    name: string;
+  }>({ id: "", name: "" });
+  const [selectedBrand, setSelectedBrand] = useState<{
+    id: string;
+    name: string;
+  }>({ id: "", name: "" });
+  const [selectedColour, setSelectedColour] = useState<{
+    id: string;
+    name: string;
+  }>({ id: "", name: "" });
+  
+  useEffect(() => {
+    if (selectedFilters) {
+      setSelectedLocation(selectedFilters.location);
+      setSelectedCategory(selectedFilters.category);
+      setSelectedBrand(selectedFilters.brand);
+      setSelectedColour(selectedFilters.colour);
+    }
+  }, [selectedFilters])
+
+  const handleLocationChange = (location: { id: string; name: string }) => {
+    setSelectedLocation(location);
     if (handleFiltersChange) {
       handleFiltersChange({
-        location: selectedLocation,
+        location,
         category: selectedCategory,
         brand: selectedBrand,
         colour: selectedColour,
@@ -109,42 +106,201 @@ export default function DropdownFilters({
     }
   };
 
-  return (
-    <>
-      <div className="m-10 space-y-6">
-        <p>Please select your options:</p>
-        <div className="flex justify-center gap-8 ">
+  const handleCategoryChange = (category: { id: string; name: string }) => {
+    setSelectedCategory(category);
+    if (handleFiltersChange) {
+      handleFiltersChange({
+        location: selectedLocation,
+        category,
+        brand: selectedBrand,
+        colour: selectedColour,
+      });
+    }
+  };
+
+  const handleBrandChange = (brand: { id: string; name: string }) => {
+    setSelectedBrand(brand);
+    if (handleFiltersChange) {
+      handleFiltersChange({
+        location: selectedLocation,
+        category: selectedCategory,
+        brand,
+        colour: selectedColour,
+      });
+    }
+  };
+
+  const handleColourChange = (colour: { id: string; name: string }) => {
+    setSelectedColour(colour);
+    if (handleFiltersChange) {
+      handleFiltersChange({
+        location: selectedLocation,
+        category: selectedCategory,
+        brand: selectedBrand,
+        colour,
+      });
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const categoryData = await getCategories();
+      if (typeof categoryData === "string") {
+        setErrors((prev) => ({ ...prev, categories: categoryData }));
+      } else {
+        setCategories(categoryData);
+      }
+      setIsLoadingCategories(false);
+
+      const locationData = await getLocations();
+      if (typeof locationData === "string") {
+        setErrors((prev) => ({ ...prev, locations: locationData }));
+      } else {
+        setLocations(locationData);
+      }
+      setIsLoadingLocations(false);
+
+      const brandData = await getBrands();
+      if (typeof brandData === "string") {
+        setErrors((prev) => ({ ...prev, brands: brandData }));
+      } else {
+        setBrands(brandData);
+      }
+      setIsLoadingBrands(false);
+
+      const colourData = await getColours();
+      if (typeof colourData === "string") {
+        setErrors((prev) => ({ ...prev, colours: colourData }));
+      } else {
+        setColours(colourData);
+      }
+      setIsLoadingColours(false);
+    };
+
+    fetchData();
+  }, []);
+
+return (
+  <>
+    <div className="m-10 space-y-6">
+      <p>Please select your options: (* fields are required)</p>
+
+      {errors && (
+        <p className="text-red-500 text-sm">
+          Failed to load some filters. Please refresh the page.
+        </p>
+      )}
+
+      <div className="m-6 space-y-4">
+        {(errors.categories ||
+          errors.locations ||
+          errors.brands ||
+          errors.colours) && (
+          <div className="space-y-2 bg-red-50 p-4 rounded-lg border border-red-200">
+            {errors.categories && (
+              <p className="text-red-600 text-sm font-medium">
+                {errors.categories}
+              </p>
+            )}
+            {errors.locations && (
+              <p className="text-red-600 text-sm font-medium">
+                {errors.locations}
+              </p>
+            )}
+            {errors.brands && (
+              <p className="text-red-600 text-sm font-medium">
+                {errors.brands}
+              </p>
+            )}
+            {errors.colours && (
+              <p className="text-red-600 text-sm font-medium">
+                {errors.colours}
+              </p>
+            )}
+          </div>
+        )}
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-[#f0f8ff] rounded-xl shadow-md">
           <Dropdown
-            options={locations.map((location) => location.location_name)}
-            label="Location"
-            onSelectAction={setSelectedLocation}
+            options={
+              isLoadingLocations
+                ? [{ id: "", name: "Loading..." }]
+                : errors.locations
+                ? [{ id: "", name: "Error loading locations" }]
+                : locations.map((loc) => ({
+                    id: loc._id,
+                    name: loc.location_name,
+                  }))
+            }
+            label="Location*"
+            onSelectAction={handleLocationChange}
+            selected={selectedLocation}
+            isOpen={openDropdown === "location"}
+            onToggle={() => handleToggleDropdown("location")}
           />
+
           <Dropdown
-            options={categories.map((category) => category.category_name)}
-            label="Category"
-            onSelectAction={setSelectedCategory}
+            options={
+              isLoadingCategories
+                ? [{ id: "", name: "Loading..." }]
+                : errors.categories
+                ? [{ id: "", name: "Error loading categories" }]
+                : categories.map((cat) => ({
+                    id: cat._id,
+                    name: cat.category_name,
+                  }))
+            }
+            label="Category*"
+            onSelectAction={handleCategoryChange}
+            selected={selectedCategory}
+            isOpen={openDropdown === "category"}
+            onToggle={() => handleToggleDropdown("category")}
           />
+
           <Dropdown
-            options={brands.map((brand) => brand.brand_name)}
+            options={
+              isLoadingBrands
+                ? [{ id: "", name: "Loading..." }]
+                : errors.brands
+                ? [{ id: "", name: "Error loading brands" }]
+                : [
+                    { id: "", name: "All Brand" },
+                    ...brands.map((brand) => ({
+                      id: brand._id,
+                      name: brand.brand_name,
+                    })),
+                  ]
+            }
             label="Brand"
-            onSelectAction={setSelectedBrand}
+            onSelectAction={handleBrandChange}
+            selected={selectedBrand}
+            isOpen={openDropdown === "brand"}
+            onToggle={() => handleToggleDropdown("brand")}
           />
+
           <Dropdown
-            options={colour.map((colour) => colour.colour)}
+            options={
+              isLoadingColours
+                ? [{ id: "", name: "Loading..." }]
+                : errors.colours
+                ? [{ id: "", name: "Error loading colours" }]
+                : [
+                    { id: "", name: "All Colour" },
+                    ...colours.map((colour) => ({
+                      id: colour._id,
+                      name: colour.colour,
+                    })),
+                  ]
+            }
             label="Colour"
-            onSelectAction={setSelectedColour}
+            onSelectAction={handleColourChange}
+            selected={selectedColour}
+            isOpen={openDropdown === "colour"}
+            onToggle={() => handleToggleDropdown("colour")}
           />
-        </div>
-        <div className="flex justify-center">
-          <button
-            className="m-4 p-2 bg-gray-300 rounded alig-center"
-            onClick={handleSubmit}
-            disabled={!selectedLocation || !selectedCategory}
-          >
-            Submit
-          </button>
         </div>
       </div>
-    </>
-  );
+    </div>
+  </>
+);
 }

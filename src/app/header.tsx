@@ -1,6 +1,7 @@
 "use client";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+
 import { FaUserAlt } from "react-icons/fa";
 import { useUser } from "../contexts/UserContext";
 
@@ -22,10 +23,12 @@ const Header = () => {
       <div className="max-w-screen-lg mx-auto flex items-center justify-between px-4 py-4 h-25">
         {/* Logo Section */}
         <Link href="/">
-          <img
+          <Image
             className="transition-transform duration-300 hover:scale-110 w-45 h-auto"
             src="/images/logo/found-it-logo.png"
             alt="FoundIt logo"
+            width="45"
+            height="45"
           />
         </Link>
 

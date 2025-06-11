@@ -43,7 +43,7 @@ export default function MapFeature() {
 
       if (!res.ok) throw new Error("Failed to submit location");
 
-      const data = await res.json();
+      // const data = await res.json();
 
       setSubmitStatus("success");
     } catch (err) {
