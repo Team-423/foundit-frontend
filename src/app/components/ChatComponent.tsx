@@ -1,6 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Send, MessageCircle, X, User } from "lucide-react";
+"use client";
+
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { Send, MessageCircle, User as UserIcon, ArrowLeft } from "lucide-react";
 import { io, Socket } from "socket.io-client";
+import type { User } from "../../contexts/UserContext";
 
 interface Message {
   sender: string;
@@ -10,32 +13,33 @@ interface Message {
 
 interface ChatComponentProps {
   itemId: string;
-  currentUser?: string;
+  currentUser?: User | null;
+  onBack?: () => void;
 }
 
 const ChatComponent: React.FC<ChatComponentProps> = ({
   itemId,
-  currentUser = "Anonymous",
+  currentUser,
+  onBack,
 }) => {
-  const [socket, setSocket] = useState<Socket | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
   const [isConnected, setIsConnected] = useState<boolean>(false);
-  const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const socketRef = useRef<Socket | null>(null);
   const chatId = `item_${itemId}`;
 
-  const scrollToBottom = (): void => {
+  const scrollToBottom = useCallback((): void => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  }, []);
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, scrollToBottom]);
 
   useEffect(() => {
-    if (isChatOpen && !socket) {
-      // Initialize socket connection
+    // Initialize socket connection
+    if (!socketRef.current) {
       const newSocket = io("https://foundit-backend-dg0o.onrender.com", {
         transports: ["websocket", "polling"],
       });
@@ -64,165 +68,212 @@ const ChatComponent: React.FC<ChatComponentProps> = ({
         setIsConnected(false);
       });
 
-      setSocket(newSocket);
+      socketRef.current = newSocket;
+    }
 
-      return () => {
-        newSocket.disconnect();
-        setSocket(null);
+    // Cleanup function
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+        socketRef.current = null;
         setIsConnected(false);
-      };
-    }
-  }, [isChatOpen, chatId, socket]);
+      }
+    };
+  }, [chatId]);
 
-  const sendMessage = (
-    e:
-      | React.MouseEvent<HTMLButtonElement>
-      | React.KeyboardEvent<HTMLInputElement>
-  ): void => {
-    e.preventDefault();
-    if (newMessage.trim() && socket && isConnected) {
-      socket.emit("sendMessage", {
-        chatId,
-        sender: currentUser,
-        message: newMessage.trim(),
-      });
-      setNewMessage("");
-    }
-  };
+  const sendMessage = useCallback(
+    (
+      e:
+        | React.MouseEvent<HTMLButtonElement>
+        | React.KeyboardEvent<HTMLInputElement>
+        | React.FormEvent<HTMLFormElement>
+    ): void => {
+      e.preventDefault();
+      if (newMessage.trim() && socketRef.current && isConnected) {
+        socketRef.current.emit("sendMessage", {
+          chatId,
+          sender: currentUser?.name || "Unknown",
+          message: newMessage.trim(),
+        });
+        setNewMessage("");
+      }
+    },
+    [newMessage, isConnected, chatId, currentUser]
+  );
 
-  const formatTime = (timestamp: string | Date): string => {
+  const formatTime = useCallback((timestamp: string | Date): string => {
     return new Date(timestamp).toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
     });
-  };
+  }, []);
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage(e);
-    }
-  };
+  const handleKeyPress = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>): void => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage(e);
+      }
+    },
+    [sendMessage]
+  );
 
-  if (!isChatOpen) {
-    return (
-      <div className="fixed bottom-4 right-4 z-50">
-        <button
-          onClick={() => setIsChatOpen(true)}
-          className="bg-[#5a189a] hover:bg-[#3c096c] text-white p-4 rounded-full shadow-lg transition-all duration-200 flex items-center gap-2"
-        >
-          <MessageCircle size={24} />
-          <span className="hidden sm:inline">Chat about this item</span>
-        </button>
-      </div>
-    );
-  }
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>): void => {
+      setNewMessage(e.target.value);
+    },
+    []
+  );
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 w-80 sm:w-96 h-96 bg-white border border-gray-300 rounded-lg shadow-xl flex flex-col">
+    <div className="h-screen bg-gray-50 flex flex-col">
       {/* Chat Header */}
-      <div className="bg-[#5a189a] text-white p-3 rounded-t-lg flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <MessageCircle size={20} />
-          <h3 className="font-semibold text-sm">Item Discussion</h3>
-          <div
-            className={`w-2 h-2 rounded-full ${
-              isConnected ? "bg-green-400" : "bg-red-400"
-            }`}
-          ></div>
+      <header className="bg-cyan-600 text-white px-4 py-4 shadow-lg flex-shrink-0">
+        <div className="max-w-4xl mx-auto flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            {onBack && (
+              <button
+                onClick={onBack}
+                className="hover:bg-cy p-2 rounded-lg transition-colors"
+                aria-label="Go back"
+              >
+                <ArrowLeft size={20} />
+              </button>
+            )}
+            <MessageCircle size={24} />
+            <div>
+              <h1 className="font-bold text-lg">Item Discussion</h1>
+              <p className="text-cyan-600 text-sm">Chat about item #{itemId}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <div
+              className={`w-3 h-3 rounded-full ${
+                isConnected ? "bg-green-400" : "bg-red-400"
+              }`}
+              aria-label={isConnected ? "Connected" : "Disconnected"}
+            />
+            <span className="text-sm">
+              {isConnected ? "Connected" : "Connecting..."}
+            </span>
+          </div>
         </div>
-        <button
-          onClick={() => setIsChatOpen(false)}
-          className="hover:bg-[#3c096c] p-1 rounded"
-        >
-          <X size={16} />
-        </button>
-      </div>
+      </header>
 
-      {/* Connection Status */}
+      {/* Connection Status Banner */}
       {!isConnected && (
-        <div className="bg-yellow-100 text-yellow-800 text-xs p-2 text-center">
-          Connecting to chat...
+        <div
+          className="bg-yellow-100 text-yellow-800 text-sm py-2 px-4 text-center flex-shrink-0"
+          role="alert"
+        >
+          Connecting to chat server...
         </div>
       )}
 
       {/* Messages Container */}
-      <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-gray-50">
-        {messages.length === 0 ? (
-          <div className="text-center text-gray-500 text-sm mt-8">
-            <MessageCircle size={32} className="mx-auto mb-2 opacity-50" />
-            <p>No messages yet.</p>
-            <p>Start the conversation about this item!</p>
-          </div>
-        ) : (
-          messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`flex ${
-                msg.sender === currentUser ? "justify-end" : "justify-start"
-              }`}
-            >
-              <div
-                className={`max-w-xs px-3 py-2 rounded-lg text-sm ${
-                  msg.sender === currentUser
-                    ? "bg-[#5a189a] text-white rounded-br-none"
-                    : "bg-white border border-gray-200 rounded-bl-none"
-                }`}
-              >
-                <div className="flex items-center gap-1 mb-1">
-                  <User size={12} className="opacity-70" />
-                  <span
-                    className={`text-xs font-medium ${
-                      msg.sender === currentUser
-                        ? "text-purple-200"
-                        : "text-gray-600"
-                    }`}
-                  >
-                    {msg.sender}
-                  </span>
-                  <span
-                    className={`text-xs ml-auto ${
-                      msg.sender === currentUser
-                        ? "text-purple-200"
-                        : "text-gray-400"
-                    }`}
-                  >
-                    {formatTime(msg.timestamp)}
-                  </span>
-                </div>
-                <p className="break-words">{msg.message}</p>
+      <main className="flex-1 overflow-y-auto min-h-0">
+        <div className="max-w-4xl mx-auto px-4 py-6 h-full flex flex-col justify-end min-h-[300px]">
+          <div className="flex-1 flex flex-col justify-end">
+            {messages.length === 0 ? (
+              <div className="text-center text-gray-500 py-20">
+                <MessageCircle size={64} className="mx-auto mb-4 opacity-30" />
+                <h2 className="text-xl font-semibold mb-2">No messages yet</h2>
+                <p className="text-lg">
+                  Start the conversation about this item!
+                </p>
               </div>
-            </div>
-          ))
-        )}
-        <div ref={messagesEndRef} />
-      </div>
+            ) : (
+              <div
+                className="space-y-4"
+                role="log"
+                aria-live="polite"
+                aria-label="Chat messages"
+              >
+                {messages.map((msg, index) => (
+                  <div
+                    key={`${msg.sender}-${msg.timestamp}-${index}`}
+                    className={`flex ${
+                      msg.sender === currentUser?.name
+                        ? "justify-end"
+                        : "justify-start"
+                    }`}
+                  >
+                    <div
+                      className={`max-w-md lg:max-w-lg px-4 py-3 rounded-2xl shadow-sm ${
+                        msg.sender === currentUser?.name
+                          ? "bg-[#5a189a] text-white rounded-br-md"
+                          : "bg-white border border-gray-200 rounded-bl-md"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <UserIcon size={14} className="opacity-70" />
+                        <span
+                          className={`text-sm font-medium ${
+                            msg.sender === currentUser?.name
+                              ? "text-cyan-700"
+                              : "text-gray-600"
+                          }`}
+                        >
+                          {msg.sender}
+                        </span>
+                        <time
+                          className={`text-xs ml-auto ${
+                            msg.sender === currentUser?.name
+                              ? "text-cyan-700"
+                              : "text-gray-400"
+                          }`}
+                          dateTime={new Date(msg.timestamp).toISOString()}
+                        >
+                          {formatTime(msg.timestamp)}
+                        </time>
+                      </div>
+                      <p className="break-words leading-relaxed">
+                        {msg.message}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <div ref={messagesEndRef} />
+        </div>
+      </main>
 
       {/* Message Input */}
-      <div className="p-3 border-t border-gray-200 bg-white rounded-b-lg">
-        <div className="flex gap-2">
-          <input
-            type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            placeholder={isConnected ? "Type your message..." : "Connecting..."}
-            disabled={!isConnected}
-            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5a189a] focus:border-transparent text-sm disabled:bg-gray-100"
-            maxLength={500}
-            onKeyDown={handleKeyPress}
-          />
-          <button
-            onClick={sendMessage}
-            disabled={!newMessage.trim() || !isConnected}
-            className="bg-[#5a189a] hover:bg-[#3c096c] disabled:bg-gray-300 disabled:cursor-not-allowed text-white p-2 rounded-lg transition-colors duration-200"
-          >
-            <Send size={16} />
-          </button>
+      <footer className="bg-white border-t border-gray-200 px-4 py-4 shadow-lg flex-shrink-0">
+        <div className="max-w-4xl mx-auto">
+          <form onSubmit={sendMessage}>
+            <div className="flex gap-3">
+              <input
+                type="text"
+                value={newMessage}
+                onChange={handleInputChange}
+                placeholder={
+                  isConnected ? "Type your message..." : "Connecting..."
+                }
+                disabled={!isConnected}
+                className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#5a189a] focus:border-transparent disabled:bg-gray-100 text-base"
+                maxLength={500}
+                onKeyDown={handleKeyPress}
+                aria-label="Message input"
+              />
+              <button
+                type="submit"
+                disabled={!newMessage.trim() || !isConnected}
+                className="bg-[#5a189a] hover:bg-[#3c096c] disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-6 py-3 rounded-xl transition-colors duration-200 flex items-center gap-2"
+                aria-label="Send message"
+              >
+                <Send size={18} />
+                <span className="hidden sm:inline">Send</span>
+              </button>
+            </div>
+          </form>
+          <div className="text-xs text-gray-500 mt-2 text-center">
+            {newMessage.length}/500 characters
+          </div>
         </div>
-        <div className="text-xs text-gray-500 mt-1">
-          {newMessage.length}/500 characters
-        </div>
-      </div>
+      </footer>
     </div>
   );
 };

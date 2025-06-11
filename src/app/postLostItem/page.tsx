@@ -152,14 +152,14 @@ export default function PostLostItemPage() {
 
   return (
     <main className="max-w-2xl mx-auto mt-10 p-6 bg-white border border-gray-200 rounded-2xl shadow-lg space-y-6">
-      <h1 className="text-3xl font-bold text-center text-[#5a189a]">
+      <h1 className="text-3xl font-bold text-center text-[#1e6091]">
         Post a Lost Item
       </h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-m font-medium text-gray-700 mb-1">
-            Item Name
+            Item Name*
           </label>
           <input
             type="text"
@@ -172,7 +172,7 @@ export default function PostLostItemPage() {
 
         <div>
           <label className="block text-m font-medium text-gray-700 mb-1">
-            Details
+            Details*
           </label>
           <textarea
             value={details}
@@ -184,26 +184,7 @@ export default function PostLostItemPage() {
 
         <div>
           <label className="block text-m font-medium text-gray-700 mb-1">
-            Location
-          </label>
-          <select
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            required
-            className="w-full border p-2 rounded"
-          >
-            <option value="">Select a location</option>
-            {locationOptions.map((loc) => (
-              <option key={loc._id} value={loc.location_name}>
-                {loc.location_name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-m font-medium text-gray-700 mb-1">
-            Category
+            Category*
           </label>
           <select
             value={category}
@@ -222,7 +203,7 @@ export default function PostLostItemPage() {
 
         <div>
           <label className="block text-m font-medium text-gray-700 mb-1">
-            Colour
+            Colour*
           </label>
           <select
             value={colour}
@@ -241,7 +222,7 @@ export default function PostLostItemPage() {
 
         <div>
           <label className="block text-m font-medium text-gray-700 mb-1">
-            Brand
+            Brand*
           </label>
           <select
             value={brand}
@@ -260,7 +241,7 @@ export default function PostLostItemPage() {
 
         <div>
           <label className="block text-m font-medium text-gray-700 mb-1">
-            Size
+            Size*
           </label>
           <select
             value={size}
@@ -278,7 +259,7 @@ export default function PostLostItemPage() {
         </div>
         <div>
           <label className="block text-m font-medium text-gray-700 mb-1">
-            Material
+            Material*
           </label>
           <select
             value={material}
@@ -295,16 +276,33 @@ export default function PostLostItemPage() {
           </select>
         </div>
 
-        <div className="p-3 border border-dashed border-gray-400 rounded-lg">
-          <label className="block text-sm font-medium mb-2 text-gray-700">
-            Select Location
+        <div>
+          <label className="block text-m font-medium text-gray-700 mb-1">
+            Location*
           </label>
+          <select
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            required
+            className="w-full border p-2 rounded"
+          >
+            <option value="">Select a location</option>
+            {locationOptions.map((loc) => (
+              <option key={loc._id} value={loc.location_name}>
+                {loc.location_name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="p-3 border border-dashed border-gray-400 rounded-lg">
+          <label className="block text-sm font-medium mb-2 text-gray-700"></label>
           <ItemLocationMap onSelect={setCoords} onAddressSelect={setAddress} />
         </div>
 
         <button
           type="submit"
-          className="w-full bg-[#5a189a] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#3c096c] transition shadow-md"
+          className="w-full bg-[#168aad] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#1e6091] transition shadow-md"
         >
           Post Lost Item
         </button>
