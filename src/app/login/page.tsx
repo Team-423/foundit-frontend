@@ -5,7 +5,7 @@ import { MOCK_USERS, useUser } from "../../contexts/UserContext";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { user, setUser } = useUser();
+  const { setUser } = useUser();
 
   const handleLogin = (userType: "alice" | "bob" | "guest") => {
     if (userType === "alice") {
