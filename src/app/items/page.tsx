@@ -64,7 +64,7 @@ export default function ItemsPage() {
           type: (searchParams.get("type") as "lost" | "found") || "",
         });
         if (result.status === 429) {
-          alert("Search limit reached (5 per hour). Please try again later.")
+          console.log("Search limit reached (5 per hour). Please try again later");
           return;
         }
         console.log("API Response:", result[0]);
