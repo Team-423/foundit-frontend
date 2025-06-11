@@ -112,9 +112,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <UserContext.Provider value={contextValue}>
-      {children}
-    </UserContext.Provider>
+    <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>
   );
 }
 
@@ -128,13 +126,13 @@ export function useUser() {
 
 export const MOCK_USERS = {
   alice: {
-    id: "6848dbfff00779a4e05a3e4b",
+    id: "6849846ffbfe2627b7b10ae1",
     name: "Alice",
     type: "seeker" as UserType,
     email: "alice@example.com",
   },
   bob: {
-    id: "6848dbfff00779a4e05a3e4c",
+    id: "6849846ffbfe2627b7b10ae2",
     name: "Bob",
     type: "finder" as UserType,
     email: "bob@example.com",

@@ -36,8 +36,7 @@ const Header = () => {
           />
         </Link>
 
-        {/* Post buttons - only show for logged in seekers/finders */}
-
+        {/* Post buttons */}
         <nav className="flex flex-row sm:flex-wrap items-center gap-4 px-2 sm:px-4 w-full sm:w-auto">
           <Link
             href="/postLostItem"
