@@ -184,7 +184,7 @@ export default function DropdownFilters({
   return (
     <>
       <div className="m-10 space-y-6">
-        <p>Please select your options: (* fields are required)</p>
+        {/* <p>Please select your options: (* fields are required)</p> */}
 
         {errors && (
           <div className="m-6 space-y-4">
