@@ -1,7 +1,7 @@
 // route "/"
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import DropdownFilters from "./components/dropdownFilters";
 import ResolvedItemsCarousel from "./components/ResolvedItemsCarousel";
 

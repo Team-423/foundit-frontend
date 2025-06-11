@@ -9,7 +9,6 @@ import {
   getBrands,
   getColours,
 } from "../../utils/api";
-import { divIcon } from "leaflet";
 
 interface Location {
   _id: string;
