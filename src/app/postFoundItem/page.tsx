@@ -28,10 +28,18 @@ export default function PostFoundItemForm() {
   const [material, setMaterial] = useState("");
   const [location, setLocation] = useState("");
 
-  const [categoryOptions, setCategoryOptions] = useState([]);
-  const [colourOptions, setColourOptions] = useState([]);
-  const [brandOptions, setBrandOptions] = useState([]);
-  const [locationOptions, setLocationOptions] = useState([]);
+  const [categoryOptions, setCategoryOptions] = useState<
+    { _id: string; category_name: string }[]
+  >([]);
+  const [colourOptions, setColourOptions] = useState<
+    { _id: string; colour: string }[]
+  >([]);
+  const [brandOptions, setBrandOptions] = useState<
+    { _id: string; brand_name: string }[]
+  >([]);
+  const [locationOptions, setLocationOptions] = useState<
+    { _id: string; location_name: string }[]
+  >([]);
 
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
@@ -162,7 +170,7 @@ export default function PostFoundItemForm() {
 
   return (
     <main className="max-w-2xl mx-auto mt-10 p-6 bg-white border border-gray-200 rounded-2xl shadow-lg space-y-6">
-      <h1 className="text-3xl font-bold text-center text-[#5a189a]">
+      <h1 className="text-3xl font-bold text-center text-[#1e6091]">
         Post a Found Item
       </h1>
 
@@ -346,7 +354,7 @@ export default function PostFoundItemForm() {
 
         <button
           type="submit"
-          className="w-full bg-[#5a189a] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#3c096c] transition shadow-md"
+          className="w-full bg-[#168aad] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#1e6091] transition shadow-md"
         >
           Post Found Item
         </button>

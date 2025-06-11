@@ -11,8 +11,9 @@ module.exports = {
       "www.firelabel.co.uk",
       "shop.mango.com",
       "www.idcardsandaccessories.co.uk",
+      "encrypted-tbn2.gstatic.com",
+      "encrypted-tbn0.gstatic.com",
       "m.media-amazon.com",
-      "picsum.photos",
     ],
   },
 };
