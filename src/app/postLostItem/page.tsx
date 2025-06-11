@@ -60,6 +60,27 @@ export default function PostLostItemPage() {
       setColourOptions(await getColours());
       setBrandOptions(await getBrands());
       setLocationOptions(await getLocations());
+
+      const categories = await getCategories();
+      if (typeof categories === "string") {
+        console.error(categories); // or set an error state if you want
+      } else {
+        setCategoryOptions(categories);
+      }
+
+      const colours = await getColours();
+      if (typeof colours === "string") {
+        console.error(colours);
+      } else {
+        setColourOptions(colours);
+      }
+
+      const brands = await getBrands();
+      if (typeof brands === "string") {
+        console.error(brands);
+      } else {
+        setBrandOptions(brands);
+      }
     };
     fetchOptions();
   }, []);

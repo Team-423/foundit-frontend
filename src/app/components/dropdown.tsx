@@ -13,44 +13,56 @@ type DropdownProps = {
   options: Option[];
   label: string;
   onSelectAction: (selected: Option) => void;
+  selected?: Option
+  isOpen: boolean;
+  onToggle: () => void;
 };
 
 export default function Dropdown({
   options,
   label,
   onSelectAction,
+  isOpen,
+  onToggle,
 }: DropdownProps) {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selected, setSelected] = useState<string>(label);
 
-  const toggleDropdown = () => {
-    setIsOpen((currentState) => !currentState);
-  };
+  const handleSelect = (option: Option) => {
+  selected,
+}: DropdownProps) {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  isOpen,
+  onToggle,
+}: DropdownProps) {
+  const [selected, setSelected] = useState<string>(label);
 
   const handleSelect = (option: Option) => {
-    setSelected(option.name);
     setIsOpen(false);
+    setSelected(option.name);
+    onToggle();
     onSelectAction(option);
   };
+
+  const displayText = selected?.name || label;
 
   return (
     <div className="flex justify-center">
       <div className="relative">
         <button
           type="button"
-          className="border rounded px-3 py-1 bg-white text-black w-35"
-          onClick={toggleDropdown}
+          className="min-w-[150px] px-4 py-2 rounded-lg bg-white text-[#1e6091] border-2 border-[#168aad] hover:bg-[#f0f8ff] transition-all duration-300 shadow-md focus:outline-none focus:ring-2 focus:ring-[#1e6091] focus:ring-opacity-50 font-medium"
+          onClick={onToggle}
         >
-          {selected}
+          {displayText}
         </button>
 
         {isOpen && (
-          <div className="absolute mt-1 w-full rounded bg-gray-100 shadow z-10 max-h-60 overflow-y-scroll">
+          <div className="absolute mt-2 w-full rounded-lg bg-white shadow-xl z-10 max-h-60 overflow-y-auto border border-[#168aad]">
             {options.map((option, index) => (
               <button
                 key={index}
                 type="button"
-                className="block w-full text-left px-3 py-1 text-black hover:bg-gray-300"
+                className="block w-full text-left px-4 py-2 text-[#1e6091] hover:bg-[#f0f8ff] transition-colors duration-200 border-b border-gray-100 last:border-b-0"
                 onClick={() => handleSelect(option)}
               >
                 {option.name}
