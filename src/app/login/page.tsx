@@ -5,7 +5,7 @@ import { MOCK_USERS, useUser } from "../../contexts/UserContext";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { setUser, isLoggedIn, user, logout } = useUser();
+  const { setUser } = useUser();
 
   const handleLogin = (userType: "alice" | "bob" | "guest") => {
     if (userType === "alice") {
@@ -20,27 +20,9 @@ export default function LoginPage() {
     }
   };
 
-  const handleLogout = () => {
-    logout();
-  };
-
   return (
     <main className="relative min-h-screen flex items-start justify-center bg-gray-100 p-6">
       {/* Debug Info in Top-Right */}
-      {/* <aside className="absolute top-4 right-4 bg-yellow-100 p-3 rounded text-sm shadow-md z-10">
-        <strong>Debug Info:</strong>
-        <br />
-        isLoggedIn: {isLoggedIn ? "true" : "false"}
-        <br />
-        user: {user ? `${user.name} (${user.type})` : "none"}
-        <br />
-        <button
-          onClick={handleLogout}
-          className="mt-2 px-2 py-1 bg-red-500 text-white text-xs rounded"
-        >
-          Clear Session
-        </button>
-      </aside> */}
 
       <section className="w-full max-w-md">
         {/* Login Form Container */}

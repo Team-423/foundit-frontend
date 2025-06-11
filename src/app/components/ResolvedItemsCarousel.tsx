@@ -134,6 +134,7 @@ export default function ResolvedItemsCarousel() {
                     fill
                     sizes="(max-width: 250px) 100vw, 250px"
                     onError={(e) => {
+                      console.log(e);
                       console.log("Image failed to load:", item.img_url);
                     }}
                     priority={index < 3}

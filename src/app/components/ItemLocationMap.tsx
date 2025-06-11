@@ -24,13 +24,6 @@ type LocationMapProps = {
   onAddressSelect?: (address: string | null) => void;
 };
 
-type Suggestion = {
-  lat: string;
-  lon: string;
-  display_name: string;
-  [key: string]: string;
-};
-
 // Marker that responds to map clicks and reverse geocodes the position
 function LocationMarker({
   position,

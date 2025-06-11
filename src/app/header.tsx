@@ -27,8 +27,8 @@ const Header = () => {
             className="transition-transform duration-300 hover:scale-110 w-45 h-auto"
             src="/images/logo/found-it-logo.png"
             alt="FoundIt logo"
-            width="45"
-            height="45"
+            width={220}
+            height={220}
           />
         </Link>
 
