@@ -27,8 +27,46 @@
   } */
 }
 
+/* Loading bar "loading" pulse */
 @layer components {
   .custom-pulse {
     animation-duration: 1.2s;
   }
+}
+
+/* Horizontal scroll/caroousel component */
+.animate-scroll-left {
+  animation: scroll-left 100s linear infinite;
+}
+
+.animate-scroll-left:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-4875.5px);
+  }
+}
+
+/* Custom scrollbar styling */
+.scroll-container::-webkit-scrollbar {
+  height: 14px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background: #9fd8ce;
+  border-radius: 4px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #5a189a;
 }
