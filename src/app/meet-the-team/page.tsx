@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function MeetTheTeam() {
   const teamMembers = [
     {
@@ -22,7 +24,7 @@ export default function MeetTheTeam() {
       github: "https://github.com/carlyzhong",
     },
     {
-      name: "Elzbieta Stankunaite",
+      name: "Ellie Stan",
       role: "Junior Developer",
       bio: "Fueled by curiosity and a love of solving tricky problems, I’ve gone from helping customers to coding cool stuff through self-learning and Northcoders — and I’m loving every minute of it!",
       linkedin: "https://www.linkedin.com/in/ellie-s-696438317/",
@@ -31,8 +33,8 @@ export default function MeetTheTeam() {
     {
       name: "Irina Grigoras",
       role: "Junior Developer",
-      bio: "",
-      linkedin: "https://www.linkedin.com/in/grigorasirina/",
+      bio: "Hello! I'm Irina, a passionate and dedicated junior software engineer with a background in electronics and strong problem-solving skills. I am eager to apply my knowledge to develop innovative and user-friendly software, utilizing technologies like Node.js, Express.js, React, and MongoDB.",
+      linkedin: "https://www.linkedin.com/in/grigorasirina",
       github: "https://github.com/grigorasirina",
     },
     {
@@ -55,6 +57,23 @@ export default function MeetTheTeam() {
       <h1 className="text-4xl font-bold text-center mb-12 text-[#1ee6091]">
         Meet The Team!
       </h1>
+      <div className="flex justify-center mb-10">
+        <div className="w-1/2 flex items-center flex-col p-6 bg-white border border-gray-300 rounded-xl shadow-md hover:shadow-2xl transform hover:-translate-y-1 transition duration-300 ease-in-out">
+          <h2 className="text-xl font-semibold text-center text-[#1e6091]">
+            Team 423
+          </h2>
+          <Image
+            className=""
+            src="/images/team-423-logo/team-423-logo.jpeg"
+            alt="Team 423 logo"
+            width={75}
+            height={75}
+          />
+          <p className="text-sm text-gray-600 mt-2 text-center">
+            Team 423 Locked In is a proud and powerful pack of seven creative developers. We're dedicated to building secure, innovative solutions, always keeping user data "locked in." Our name, linked to the HTTP 423 "Locked" status code, directly reflects this core promise. Like a friendly wolfpack, we unite to protect and innovate, ensuring trust in every project.
+          </p>
+        </div>
+      </div>
       <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3 shadow">
         {teamMembers.map((member, index) => (
           <div
@@ -75,7 +94,6 @@ export default function MeetTheTeam() {
               className="flex justify-center items-center mt-4 text-[#0a66c2] hover:underline"
               target="blank"
             >
-              {" "}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="25"
