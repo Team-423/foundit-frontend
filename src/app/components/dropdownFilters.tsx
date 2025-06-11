@@ -55,7 +55,7 @@ export default function DropdownFilters({
   const [isLoadingBrands, setIsLoadingBrands] = useState(true);
   const [isLoadingColours, setIsLoadingColours] = useState(true);
   const [isError, setIsError] = useState(false);
-  
+
   useEffect(() => {
     getCategories()
     .then((categoryData) => {
@@ -271,14 +271,15 @@ export default function DropdownFilters({
           <Dropdown
             options={
               isLoadingLocations
-                ? [{ id: "", name: "Loading..." }]
-                : errors.locations
-                ? [{ id: "", name: "Error loading locations" }]
-                : locations.map((loc) => ({
-                    id: loc._id,
-                    name: loc.location_name,
-                  }))
+              ? [{ id: "", name: "Loading..." }]
+              : errors.locations
+              ? [{ id: "", name: "Error loading locations" }]
+              : locations.map((loc) => ({
+                id: loc._id,
+                name: loc.location_name,
+              }))
             }
+          )
             label="Location*"
             onSelectAction={setSelectedLocation}
             selected={selectedLocation}
@@ -349,5 +350,5 @@ export default function DropdownFilters({
         </div>
       </div>
     </>
-  );
-}
+  )
+  }
