@@ -13,6 +13,10 @@ module.exports = {
       "www.idcardsandaccessories.co.uk",
       "m.media-amazon.com",
       "picsum.photos",
+      "images1.vinted.net",
+      "encrypted-tbn2.gstatic.com",
+      "www.lakelandlocks.co.uk",
+      "thelockspecialist.co.uk",
     ],
   },
 };
