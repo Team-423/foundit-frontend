@@ -11,7 +11,8 @@ module.exports = {
       "www.firelabel.co.uk",
       "shop.mango.com",
       "www.idcardsandaccessories.co.uk",
-      "m.media-amazon.com"
+      "m.media-amazon.com",
+      "picsum.photos",
     ],
   },
 };
