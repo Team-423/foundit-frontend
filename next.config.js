@@ -17,6 +17,7 @@ module.exports = {
       "encrypted-tbn2.gstatic.com",
       "www.lakelandlocks.co.uk",
       "thelockspecialist.co.uk",
+      "images1.vinted.net",
     ],
   },
 };
