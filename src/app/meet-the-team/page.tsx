@@ -12,7 +12,7 @@ export default function MeetTheTeam() {
     {
       name: "Kevin Stephenson",
       role: "Junior Developer",
-      bio: "Kevins bio",
+      bio: "Good morning, good afternoon, good evening, depending on where you are. Formerly an equities trader, I decided to trade in that lifestyle because I thought stressing and looking at screens all day wasn't a good idea. So now I'm a full-stack Web Developer! Please reach out, I like making cool stuff.",
       linkedin: "https://www.linkedin.com/in/kevin-stephenson-a1571b357/",
       github: "https://github.com/kevpstephens",
     },
