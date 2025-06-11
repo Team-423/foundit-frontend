@@ -31,7 +31,7 @@ interface Colour {
 }
 
 export default function DropdownFilters({
-  handleFiltersChange,
+  handleFiltersChange, selectedFilters
 }: {
   handleFiltersChange?: (filters: {
     location: { id: string; name: string };
@@ -39,6 +39,12 @@ export default function DropdownFilters({
     brand: { id: string; name: string };
     colour: { id: string; name: string };
   }) => void;
+  selectedFilters?: {
+    location: { id: string; name: string };
+    category: { id: string; name: string };
+    brand: { id: string; name: string };
+    colour: { id: string; name: string };
+  };
 }) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [locations, setLocations] = useState<Location[]>([]);
@@ -48,6 +54,58 @@ export default function DropdownFilters({
   const [isLoadingLocations, setIsLoadingLocations] = useState(true);
   const [isLoadingBrands, setIsLoadingBrands] = useState(true);
   const [isLoadingColours, setIsLoadingColours] = useState(true);
+  const [isError, setIsError] = useState(false);
+  
+  useEffect(() => {
+    getCategories()
+    .then((categoryData) => {
+      setCategories(categoryData);
+    })
+    .catch((error) => {
+      console.error("Error fetching categories:", error);
+      setIsError(true);
+    })
+    .finally(() => {
+      setIsLoadingCategories(false);
+    });
+    
+    getLocations()
+    .then((locationData) => {
+      setLocations(locationData);
+    })
+    .catch((error) => {
+      console.error("Error fetching locations:", error);
+      setIsError(true);
+    })
+    .finally(() => {
+      setIsLoadingLocations(false);
+    });
+    
+    getBrands()
+    .then((brandData) => {
+      setBrands(brandData);
+    })
+    .catch((error) => {
+      console.error("Error fetching brands:", error);
+      setIsError(true);
+    })
+    .finally(() => {
+      setIsLoadingBrands(false);
+    });
+    
+    getColours()
+    .then((colourData) => {
+      setColours(colourData);
+    })
+    .catch((error) => {
+      console.error("Error fetching colours:", error);
+      setIsError(true);
+    })
+    .finally(() => {
+      setIsLoadingColours(false);
+    });
+  }, []);
+  
   const [errors, setErrors] = useState<{
     categories?: string;
     locations?: string;
@@ -77,6 +135,15 @@ export default function DropdownFilters({
     id: string;
     name: string;
   }>({ id: "", name: "" });
+  
+  useEffect(() => {
+    if (selectedFilters) {
+      setSelectedLocation(selectedFilters.location);
+      setSelectedCategory(selectedFilters.category);
+      setSelectedBrand(selectedFilters.brand);
+      setSelectedColour(selectedFilters.colour);
+    }
+  }, [selectedFilters])
 
   const handleLocationChange = (location: { id: string; name: string }) => {
     setSelectedLocation(location);
@@ -166,6 +233,12 @@ export default function DropdownFilters({
 
   return (
     <>
+      <div className="m-10 space-y-6">
+        <p>Please select your options: (* fields are required)</p>
+        {isError && (
+          <p className="text-red-500 text-sm">
+            Failed to load some filters. Please refresh the page.
+          </p>
       <div className="m-6 space-y-4">
         {(errors.categories ||
           errors.locations ||
@@ -207,6 +280,8 @@ export default function DropdownFilters({
                   }))
             }
             label="Location*"
+            onSelectAction={setSelectedLocation}
+            selected={selectedLocation}
             onSelectAction={handleLocationChange}
             isOpen={openDropdown === "location"}
             onToggle={() => handleToggleDropdown("location")}
@@ -223,6 +298,8 @@ export default function DropdownFilters({
                   }))
             }
             label="Category*"
+            onSelectAction={setSelectedCategory}
+            selected={selectedCategory}
             onSelectAction={handleCategoryChange}
             isOpen={openDropdown === "category"}
             onToggle={() => handleToggleDropdown("category")}
@@ -242,6 +319,8 @@ export default function DropdownFilters({
                   ]
             }
             label="Brand"
+            onSelectAction={setSelectedBrand}
+            selected={selectedBrand}
             onSelectAction={handleBrandChange}
             isOpen={openDropdown === "brand"}
             onToggle={() => handleToggleDropdown("brand")}
@@ -261,6 +340,8 @@ export default function DropdownFilters({
                   ]
             }
             label="Colour"
+            onSelectAction={setSelectedColour}
+            selected={selectedColour}
             onSelectAction={handleColourChange}
             isOpen={openDropdown === "colour"}
             onToggle={() => handleToggleDropdown("colour")}
