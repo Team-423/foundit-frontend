@@ -40,8 +40,6 @@ export default async function ItemViewPage({ params }: ItemViewPageProps) {
   const item: { itemById: Item } = await res.json();
   const { itemById } = item;
 
-  console.log("Item data:", JSON.stringify(itemById, null, 2));
-
   return (
     <div className="min-h-screen bg-gray-50 flex items-start justify-center p-8">
       <div className="max-w-4xl w-full bg-white rounded-xl shadow-lg p-8 relative">
