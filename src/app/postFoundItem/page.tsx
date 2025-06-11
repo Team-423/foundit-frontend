@@ -170,7 +170,7 @@ export default function PostFoundItemForm() {
 
   return (
     <main className="max-w-2xl mx-auto mt-10 p-6 bg-white border border-gray-200 rounded-2xl shadow-lg space-y-6">
-      <h1 className="text-3xl font-bold text-center text-[#5a189a]">
+      <h1 className="text-3xl font-bold text-center text-[#1e6091]">
         Post a Found Item
       </h1>
 
@@ -354,7 +354,7 @@ export default function PostFoundItemForm() {
 
         <button
           type="submit"
-          className="w-full bg-[#5a189a] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#3c096c] transition shadow-md"
+          className="w-full bg-[#168aad] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#1e6091] transition shadow-md"
         >
           Post Found Item
         </button>

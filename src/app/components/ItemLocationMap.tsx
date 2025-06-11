@@ -288,7 +288,7 @@ export default function ItemLocationMap({
 
             <button
               onClick={handleSearchSubmit}
-              className="bg-[#5a189a] text-white px-4 py-2 rounded-md hover:bg-[#3c096c]"
+              className="bg-[#168aad] text-white px-4 py-2 rounded-md hover:bg-[#1e6091]"
             >
               Search
             </button>

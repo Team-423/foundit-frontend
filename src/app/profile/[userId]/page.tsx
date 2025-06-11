@@ -63,7 +63,7 @@ export default function UserProfile() {
       {/* {User Page Container} */}
       <div className="min-h-screen flex flex-col bg-[#ffffff]">
         {/* {User Profile Header} */}
-        <header className="bg-blue-200 p-6 flex justify-center items-center shadow-md">
+        <header className="bg-gray-200 p-6 flex justify-center items-center shadow-md">
           <div className="w-10 h-10 bg-[#22577A] rounded-full flex items-center justify-center mr-2">
             <FaUserAlt className="text-white" size={20} />
           </div>
