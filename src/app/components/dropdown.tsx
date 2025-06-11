@@ -2,8 +2,6 @@
 
 "use client";
 
-import { useState } from "react";
-
 interface Option {
   id: string;
   name: string;

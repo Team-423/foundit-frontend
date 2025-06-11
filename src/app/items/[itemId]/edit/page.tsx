@@ -52,7 +52,7 @@ export default function EditItemForm() {
   };
 
   const handleUpdate = async () => {
-      const updatedItem = await updateItemById(String(itemId), itemDetailsInput);
+      await updateItemById(String(itemId), itemDetailsInput);
       alert("Updated successfully");
   };
 

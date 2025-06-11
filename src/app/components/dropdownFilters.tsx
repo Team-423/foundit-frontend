@@ -54,7 +54,6 @@ export default function DropdownFilters({
   const [isLoadingLocations, setIsLoadingLocations] = useState(true);
   const [isLoadingBrands, setIsLoadingBrands] = useState(true);
   const [isLoadingColours, setIsLoadingColours] = useState(true);
-  const [isError, setIsError] = useState(false);
 
   const [errors, setErrors] = useState<{
     categories?: string;
@@ -186,7 +185,7 @@ return (
     <div className="m-10 space-y-6">
       <p>Please select your options: (* fields are required)</p>
 
-      {isError && (
+      {errors && (
         <p className="text-red-500 text-sm">
           Failed to load some filters. Please refresh the page.
         </p>
