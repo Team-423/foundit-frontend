@@ -1,7 +1,7 @@
 // route "/"
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import DropdownFilters from "./components/dropdownFilters";
 import ResolvedItemsCarousel from "./components/ResolvedItemsCarousel";
 
@@ -17,13 +17,13 @@ export default function Page() {
   });
 
   // Log complete search state
-  useEffect(() => {
-    console.log("Queries:", {
-      searchInput,
-      searchType,
-      filters: currentFilters,
-    });
-  }, [searchInput, searchType, currentFilters]);
+  // useEffect(() => {
+  //   console.log("Queries:", {
+  //     searchInput,
+  //     searchType,
+  //     filters: currentFilters,
+  //   });
+  // }, [searchInput, searchType, currentFilters]);
 
   // Callback function to receive filter changes from DropdownFilters
   const handleFiltersChange = (filters: {

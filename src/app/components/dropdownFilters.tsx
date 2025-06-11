@@ -31,7 +31,8 @@ interface Colour {
 }
 
 export default function DropdownFilters({
-  handleFiltersChange, selectedFilters
+  handleFiltersChange,
+  selectedFilters,
 }: {
   handleFiltersChange?: (filters: {
     location: { id: string; name: string };
@@ -84,7 +85,7 @@ export default function DropdownFilters({
     id: string;
     name: string;
   }>({ id: "", name: "" });
-  
+
   useEffect(() => {
     if (selectedFilters) {
       setSelectedLocation(selectedFilters.location);
@@ -92,7 +93,7 @@ export default function DropdownFilters({
       setSelectedBrand(selectedFilters.brand);
       setSelectedColour(selectedFilters.colour);
     }
-  }, [selectedFilters])
+  }, [selectedFilters]);
 
   const handleLocationChange = (location: { id: string; name: string }) => {
     setSelectedLocation(location);
@@ -180,127 +181,123 @@ export default function DropdownFilters({
     fetchData();
   }, []);
 
-return (
-  <>
-    <div className="m-10 space-y-6">
-      <p>Please select your options: (* fields are required)</p>
+  return (
+    <>
+      <div className="m-10 space-y-6">
+        <p>Please select your options: (* fields are required)</p>
 
-      {errors && (
-        <p className="text-red-500 text-sm">
-          Failed to load some filters. Please refresh the page.
-        </p>
-      )}
+        {errors && (
+          <div className="m-6 space-y-4">
+            {(errors.categories ||
+              errors.locations ||
+              errors.brands ||
+              errors.colours) && (
+              <div className="space-y-2 bg-red-50 p-4 rounded-lg border border-red-200">
+                {errors.categories && (
+                  <p className="text-red-600 text-sm font-medium">
+                    {errors.categories}
+                  </p>
+                )}
+                {errors.locations && (
+                  <p className="text-red-600 text-sm font-medium">
+                    {errors.locations}
+                  </p>
+                )}
+                {errors.brands && (
+                  <p className="text-red-600 text-sm font-medium">
+                    {errors.brands}
+                  </p>
+                )}
+                {errors.colours && (
+                  <p className="text-red-600 text-sm font-medium">
+                    {errors.colours}
+                  </p>
+                )}
+              </div>
+            )}
 
-      <div className="m-6 space-y-4">
-        {(errors.categories ||
-          errors.locations ||
-          errors.brands ||
-          errors.colours) && (
-          <div className="space-y-2 bg-red-50 p-4 rounded-lg border border-red-200">
-            {errors.categories && (
-              <p className="text-red-600 text-sm font-medium">
-                {errors.categories}
-              </p>
-            )}
-            {errors.locations && (
-              <p className="text-red-600 text-sm font-medium">
-                {errors.locations}
-              </p>
-            )}
-            {errors.brands && (
-              <p className="text-red-600 text-sm font-medium">
-                {errors.brands}
-              </p>
-            )}
-            {errors.colours && (
-              <p className="text-red-600 text-sm font-medium">
-                {errors.colours}
-              </p>
-            )}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-[#f0f8ff] rounded-xl shadow-md">
+              <Dropdown
+                options={
+                  isLoadingLocations
+                    ? [{ id: "", name: "Loading..." }]
+                    : errors.locations
+                    ? [{ id: "", name: "Error loading locations" }]
+                    : locations.map((loc) => ({
+                        id: loc._id,
+                        name: loc.location_name,
+                      }))
+                }
+                label="Location*"
+                onSelectAction={handleLocationChange}
+                selected={selectedLocation}
+                isOpen={openDropdown === "location"}
+                onToggle={() => handleToggleDropdown("location")}
+              />
+
+              <Dropdown
+                options={
+                  isLoadingCategories
+                    ? [{ id: "", name: "Loading..." }]
+                    : errors.categories
+                    ? [{ id: "", name: "Error loading categories" }]
+                    : categories.map((cat) => ({
+                        id: cat._id,
+                        name: cat.category_name,
+                      }))
+                }
+                label="Category*"
+                onSelectAction={handleCategoryChange}
+                selected={selectedCategory}
+                isOpen={openDropdown === "category"}
+                onToggle={() => handleToggleDropdown("category")}
+              />
+
+              <Dropdown
+                options={
+                  isLoadingBrands
+                    ? [{ id: "", name: "Loading..." }]
+                    : errors.brands
+                    ? [{ id: "", name: "Error loading brands" }]
+                    : [
+                        { id: "", name: "All Brand" },
+                        ...brands.map((brand) => ({
+                          id: brand._id,
+                          name: brand.brand_name,
+                        })),
+                      ]
+                }
+                label="Brand"
+                onSelectAction={handleBrandChange}
+                selected={selectedBrand}
+                isOpen={openDropdown === "brand"}
+                onToggle={() => handleToggleDropdown("brand")}
+              />
+
+              <Dropdown
+                options={
+                  isLoadingColours
+                    ? [{ id: "", name: "Loading..." }]
+                    : errors.colours
+                    ? [{ id: "", name: "Error loading colours" }]
+                    : [
+                        { id: "", name: "All Colour" },
+                        ...colours.map((colour) => ({
+                          id: colour._id,
+                          name: colour.colour,
+                        })),
+                      ]
+                }
+                label="Colour"
+                onSelectAction={handleColourChange}
+                selected={selectedColour}
+                isOpen={openDropdown === "colour"}
+                onToggle={() => handleToggleDropdown("colour")}
+              />
+            </div>
           </div>
         )}
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-[#f0f8ff] rounded-xl shadow-md">
-          <Dropdown
-            options={
-              isLoadingLocations
-                ? [{ id: "", name: "Loading..." }]
-                : errors.locations
-                ? [{ id: "", name: "Error loading locations" }]
-                : locations.map((loc) => ({
-                    id: loc._id,
-                    name: loc.location_name,
-                  }))
-            }
-            label="Location*"
-            onSelectAction={handleLocationChange}
-            selected={selectedLocation}
-            isOpen={openDropdown === "location"}
-            onToggle={() => handleToggleDropdown("location")}
-          />
-
-          <Dropdown
-            options={
-              isLoadingCategories
-                ? [{ id: "", name: "Loading..." }]
-                : errors.categories
-                ? [{ id: "", name: "Error loading categories" }]
-                : categories.map((cat) => ({
-                    id: cat._id,
-                    name: cat.category_name,
-                  }))
-            }
-            label="Category*"
-            onSelectAction={handleCategoryChange}
-            selected={selectedCategory}
-            isOpen={openDropdown === "category"}
-            onToggle={() => handleToggleDropdown("category")}
-          />
-
-          <Dropdown
-            options={
-              isLoadingBrands
-                ? [{ id: "", name: "Loading..." }]
-                : errors.brands
-                ? [{ id: "", name: "Error loading brands" }]
-                : [
-                    { id: "", name: "All Brand" },
-                    ...brands.map((brand) => ({
-                      id: brand._id,
-                      name: brand.brand_name,
-                    })),
-                  ]
-            }
-            label="Brand"
-            onSelectAction={handleBrandChange}
-            selected={selectedBrand}
-            isOpen={openDropdown === "brand"}
-            onToggle={() => handleToggleDropdown("brand")}
-          />
-
-          <Dropdown
-            options={
-              isLoadingColours
-                ? [{ id: "", name: "Loading..." }]
-                : errors.colours
-                ? [{ id: "", name: "Error loading colours" }]
-                : [
-                    { id: "", name: "All Colour" },
-                    ...colours.map((colour) => ({
-                      id: colour._id,
-                      name: colour.colour,
-                    })),
-                  ]
-            }
-            label="Colour"
-            onSelectAction={handleColourChange}
-            selected={selectedColour}
-            isOpen={openDropdown === "colour"}
-            onToggle={() => handleToggleDropdown("colour")}
-          />
-        </div>
       </div>
-    </div>
-  </>
-);
+    </>
+  );
 }

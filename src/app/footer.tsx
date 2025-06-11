@@ -8,11 +8,11 @@ function Footer() {
         <p>©{currentYear} Team 423</p>
         <a href="https://github.com/Team-423" target="_blank" rel="author">
           <Image
-            className="transition-transform duration-300 transform hover:scale-125"
+            className="h-5 w-auto transition-transform duration-300 transform hover:scale-125"
             src="/images/github-logo/white/github-mark-white.png"
             alt="GitHub logo"
-            height="24"
-            width="24"
+            height={0}
+            width={0}
           />
         </a>
       </div>
