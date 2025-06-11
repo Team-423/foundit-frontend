@@ -41,13 +41,13 @@ const Header = () => {
         <nav className="flex flex-row sm:flex-wrap items-center gap-4 px-2 sm:px-4 w-full sm:w-auto">
           <Link
             href="/postLostItem"
-            className="w-full sm:w-[160px] text-center px-4 py-2 rounded-md bg-[#168aad] text-white hover:bg-[#1e6091] transition font-bold"
+            className="w-full sm:w-[200px] text-center px-4 py-2 rounded-md bg-[#168aad] text-white hover:bg-[#1e6091] transition font-bold"
           >
             Post Lost Item
           </Link>
           <Link
             href="/postFoundItem"
-            className="w-full sm:w-[160px] text-center px-4 py-2 rounded-md bg-[#168aad] text-white hover:bg-[#1e6091] transition font-bold"
+            className="w-full sm:w-[200px] text-center px-4 py-2 rounded-md bg-[#168aad] text-white hover:bg-[#1e6091] transition font-bold"
           >
             Post Found Item
           </Link>
