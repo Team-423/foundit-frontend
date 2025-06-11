@@ -24,11 +24,11 @@ const Header = () => {
         {/* Logo Section */}
         <Link href="/">
           <Image
-            className="transition-transform duration-300 hover:scale-110 w-45 h-auto"
+            className="transition-transform duration-300 hover:scale-110"
             src="/images/logo/found-it-logo.png"
             alt="FoundIt logo"
-            width={220}
-            height={220}
+            width={150}
+            height={150}
             priority
           />
         </Link>
