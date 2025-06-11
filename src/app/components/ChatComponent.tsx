@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Send, MessageCircle, User as UserIcon, ArrowLeft } from "lucide-react";
 import { io, Socket } from "socket.io-client";
 import type { User } from "../../contexts/UserContext";
+import { getItemById } from "../../utils/api";
 
 interface Message {
   sender: string;
@@ -25,6 +26,7 @@ const ChatComponent: React.FC<ChatComponentProps> = ({
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
   const [isConnected, setIsConnected] = useState<boolean>(false);
+  const [item, setItem] = useState<{ item_name: string } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const socketRef = useRef<Socket | null>(null);
   const chatId = `item_${itemId}`;
@@ -36,6 +38,19 @@ const ChatComponent: React.FC<ChatComponentProps> = ({
   useEffect(() => {
     scrollToBottom();
   }, [messages, scrollToBottom]);
+
+  useEffect(() => {
+    const fetchItem = async () => {
+      try {
+        const data = await getItemById(itemId);
+        setItem(data);
+      } catch (error) {
+        console.error("Failed to fetch item:", error);
+      }
+    };
+
+    fetchItem();
+  }, [itemId]);
 
   useEffect(() => {
     // Initialize socket connection
@@ -126,9 +141,9 @@ const ChatComponent: React.FC<ChatComponentProps> = ({
   );
 
   return (
-    <div className="h-screen bg-gray-50 flex flex-col">
+    <div className="h-[700px] bg-gray-50 flex flex-col">
       {/* Chat Header */}
-      <header className="bg-cyan-600 text-white px-4 py-4 shadow-lg flex-shrink-0">
+      <header className="bg-cyan-800 text-white px-4 py-4 shadow-lg flex-shrink-0">
         <div className="max-w-4xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
             {onBack && (
@@ -142,8 +157,9 @@ const ChatComponent: React.FC<ChatComponentProps> = ({
             )}
             <MessageCircle size={24} />
             <div>
-              <h1 className="font-bold text-lg">Item Discussion</h1>
-              <p className="text-cyan-600 text-sm">Chat about item #{itemId}</p>
+              <h1 className="font-bold text-lg">
+                Chat about {item?.item_name ? `${item.item_name}` : "item..."}
+              </h1>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -172,7 +188,7 @@ const ChatComponent: React.FC<ChatComponentProps> = ({
 
       {/* Messages Container */}
       <main className="flex-1 overflow-y-auto min-h-0">
-        <div className="max-w-4xl mx-auto px-4 py-6 h-full flex flex-col justify-end min-h-[300px]">
+        <div className="max-w-4xl mx-auto px-4 py-6 flex flex-col justify-end min-h-[300px]">
           <div className="flex-1 flex flex-col justify-end">
             {messages.length === 0 ? (
               <div className="text-center text-gray-500 py-20">
@@ -201,7 +217,7 @@ const ChatComponent: React.FC<ChatComponentProps> = ({
                     <div
                       className={`max-w-md lg:max-w-lg px-4 py-3 rounded-2xl shadow-sm ${
                         msg.sender === currentUser?.name
-                          ? "bg-[#5a189a] text-white rounded-br-md"
+                          ? "bg-[#168aad] text-white rounded-br-md"
                           : "bg-white border border-gray-200 rounded-bl-md"
                       }`}
                     >
@@ -210,7 +226,7 @@ const ChatComponent: React.FC<ChatComponentProps> = ({
                         <span
                           className={`text-sm font-medium ${
                             msg.sender === currentUser?.name
-                              ? "text-cyan-700"
+                              ? "text-gray-200"
                               : "text-gray-600"
                           }`}
                         >
@@ -219,7 +235,7 @@ const ChatComponent: React.FC<ChatComponentProps> = ({
                         <time
                           className={`text-xs ml-auto ${
                             msg.sender === currentUser?.name
-                              ? "text-cyan-700"
+                              ? "text-gray-200"
                               : "text-gray-400"
                           }`}
                           dateTime={new Date(msg.timestamp).toISOString()}
@@ -241,7 +257,7 @@ const ChatComponent: React.FC<ChatComponentProps> = ({
       </main>
 
       {/* Message Input */}
-      <footer className="bg-white border-t border-gray-200 px-4 py-4 shadow-lg flex-shrink-0">
+      <footer className="bg-white border-t border-gray-200 px-4 py-6 shadow-lg flex-shrink-0">
         <div className="max-w-4xl mx-auto">
           <form onSubmit={sendMessage}>
             <div className="flex gap-3">
@@ -253,7 +269,7 @@ const ChatComponent: React.FC<ChatComponentProps> = ({
                   isConnected ? "Type your message..." : "Connecting..."
                 }
                 disabled={!isConnected}
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#5a189a] focus:border-transparent disabled:bg-gray-100 text-base"
+                className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#168aad] focus:border-transparent disabled:bg-gray-100 text-base"
                 maxLength={500}
                 onKeyDown={handleKeyPress}
                 aria-label="Message input"
@@ -261,7 +277,7 @@ const ChatComponent: React.FC<ChatComponentProps> = ({
               <button
                 type="submit"
                 disabled={!newMessage.trim() || !isConnected}
-                className="bg-[#5a189a] hover:bg-[#3c096c] disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-6 py-3 rounded-xl transition-colors duration-200 flex items-center gap-2"
+                className="bg-[#168aad] hover:bg-cyan-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-6 py-3 rounded-xl transition-colors duration-200 flex items-center gap-2"
                 aria-label="Send message"
               >
                 <Send size={18} />
