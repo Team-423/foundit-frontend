@@ -52,8 +52,8 @@ export default function EditItemForm() {
   };
 
   const handleUpdate = async () => {
-      await updateItemById(String(itemId), itemDetailsInput);
-      alert("Updated successfully");
+    await updateItemById(String(itemId), itemDetailsInput);
+    alert("Updated successfully");
   };
 
   return (
@@ -84,51 +84,71 @@ export default function EditItemForm() {
 
       {/* Text inputs */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-3xl">
-        <input
-          type="text"
-          placeholder="Item Name"
-          className="border px-4 py-2 rounded shadow"
-          value={itemDetailsInput.item_name}
-          onChange={(e) =>
-            setItemDetailsInput({
-              ...itemDetailsInput,
-              item_name: e.target.value,
-            })
-          }
-        />
-        <input
-          type="text"
-          placeholder="Description"
-          className="border px-4 py-2 rounded shadow"
-          value={itemDetailsInput.description}
-          onChange={(e) =>
-            setItemDetailsInput({
-              ...itemDetailsInput,
-              description: e.target.value,
-            })
-          }
-        />
-        <input
-          type="text"
-          placeholder="Size (e.g. XL, 10EU)"
-          className="border px-4 py-2 rounded shadow"
-          value={itemDetailsInput.size}
-          onChange={(e) =>
-            setItemDetailsInput({ ...itemDetailsInput, size: e.target.value })
-          }
-        />
-        <input
-          type="text"
-          placeholder="Material (e.g. denim, plastic)"
-          className="border px-4 py-2 rounded shadow"
-          value={itemDetailsInput.material}
-          onChange={(e) =>
-            setItemDetailsInput({
-              ...itemDetailsInput,
-              material: e.target.value,
-            })
-          }
-        />
+        <div className="flex flex-col">
+          <label className="mb-1 text-sm font-medium text-gray-700">
+            Item Name:
+          </label>
+          <input
+            type="text"
+            placeholder="Item Name"
+            className="border px-4 py-2 rounded shadow"
+            value={itemDetailsInput.item_name}
+            onChange={(e) =>
+              setItemDetailsInput({
+                ...itemDetailsInput,
+                item_name: e.target.value,
+              })
+            }
+          />
+        </div>
+        <div className="flex flex-col">
+          <label className="mb-1 text-sm font-medium text-gray-700">
+            Description:
+          </label>
+          <input
+            type="text"
+            placeholder="Description"
+            className="border px-4 py-2 rounded shadow"
+            value={itemDetailsInput.description}
+            onChange={(e) =>
+              setItemDetailsInput({
+                ...itemDetailsInput,
+                description: e.target.value,
+              })
+            }
+          />
+        </div>
+        <div className="flex flex-col">
+          <label className="mb-1 text-sm font-medium text-gray-700">
+            Size:
+          </label>
+          <input
+            type="text"
+            placeholder="Size (e.g. XL, 10EU)"
+            className="border px-4 py-2 rounded shadow"
+            value={itemDetailsInput.size}
+            onChange={(e) =>
+              setItemDetailsInput({ ...itemDetailsInput, size: e.target.value })
+            }
+          />
+        </div>
+        <div className="flex flex-col">
+          <label className="mb-1 text-sm font-medium text-gray-700">
+            Material:
+          </label>
+          <input
+            type="text"
+            placeholder="Material (e.g. denim, plastic)"
+            className="border px-4 py-2 rounded shadow"
+            value={itemDetailsInput.material}
+            onChange={(e) =>
+              setItemDetailsInput({
+                ...itemDetailsInput,
+                material: e.target.value,
+              })
+            }
+          />
+        </div>
       </div>
 
       <button
