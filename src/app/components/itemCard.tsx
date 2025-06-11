@@ -30,8 +30,8 @@ export default function ItemCard({ item }: ItemCardProps) {
               src={item.img_url}
               alt={item.item_name}
               className="w-full h-full object-contain rounded-md"
-              width={100}
-              height={100}
+              width={200}
+              height={200}
             />
           ) : (
             <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 text-base rounded-md">
