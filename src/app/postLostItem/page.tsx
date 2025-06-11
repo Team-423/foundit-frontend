@@ -56,11 +56,6 @@ export default function PostLostItemPage() {
 
   useEffect(() => {
     const fetchOptions = async () => {
-      setCategoryOptions(await getCategories());
-      setColourOptions(await getColours());
-      setBrandOptions(await getBrands());
-      setLocationOptions(await getLocations());
-
       const categories = await getCategories();
       if (typeof categories === "string") {
         console.error(categories); // or set an error state if you want
@@ -80,6 +75,12 @@ export default function PostLostItemPage() {
         console.error(brands);
       } else {
         setBrandOptions(brands);
+      }
+      const locations = await getLocations();
+      if (typeof locations === "string") {
+        console.error(locations);
+      } else {
+        setLocationOptions(locations);
       }
     };
     fetchOptions();

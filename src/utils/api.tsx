@@ -172,10 +172,10 @@ export const getItemWithQueries = async (queries: {
     ...(queries.brand_id && { brand: queries.brand_id }),
     ...(queries.type && { type: queries.type }),
   });
-  console.log(params.toString(), "<<<<in api");
   const { data } = await itemsApi.get(`?${params.toString()}`);
   return data;
-  
+};
+
 export const getItemById = async (item_id: string) => {
   const { data } = await itemsApi.get<ItemResponse>(`/${item_id}`);
   return {
@@ -223,7 +223,7 @@ export const updateItemById = async (
     category: updatedData.category?.id,
     brand: updatedData.brand?.id,
     colour: updatedData.colour?.id,
-  }
+  };
   const { data } = await itemsApi.patch(`/${itemId}`, formattedData);
   return data.updatedItem;
 };

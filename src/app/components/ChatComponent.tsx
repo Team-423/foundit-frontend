@@ -72,7 +72,7 @@ const ChatComponent: React.FC<ChatComponentProps> = ({
         setIsConnected(false);
       };
     }
-  }, [isChatOpen, chatId]);
+  }, [isChatOpen, chatId, socket]);
 
   const sendMessage = (
     e:

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Item } from "../items/page";
+import Image from "next/image";
 
 interface ItemCardProps {
   item: Item;
@@ -25,7 +26,7 @@ export default function ItemCard({ item }: ItemCardProps) {
       <div className="bg-white p-6 border border-gray-200 hover:border-blue-500 transform hover:scale-102 transition-all duration-200 flex">
         <div className="flex-none w-48 h-48 mr-6">
           {item.img_url ? (
-            <img
+            <Image
               src={item.img_url}
               alt={item.item_name}
               className="w-full h-full object-contain rounded-md"

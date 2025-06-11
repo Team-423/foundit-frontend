@@ -20,12 +20,6 @@ export default function Dropdown({
   options,
   label,
   onSelectAction,
-  isOpen,
-  onToggle,
-}: DropdownProps) {
-  const [selected, setSelected] = useState<string>(label);
-
-  const handleSelect = (option: Option) => {
   selected,
   isOpen,
   onToggle,
