@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Send, MessageCircle, User, ArrowLeft } from "lucide-react";
+import { Send, MessageCircle, User as UserIcon, ArrowLeft } from "lucide-react";
 import { io, Socket } from "socket.io-client";
+import type { User } from "../../contexts/UserContext";
 
 interface Message {
   sender: string;
@@ -12,13 +13,13 @@ interface Message {
 
 interface ChatComponentProps {
   itemId: string;
-  currentUser?: string;
+  currentUser?: User | null;
   onBack?: () => void;
 }
 
 const ChatComponent: React.FC<ChatComponentProps> = ({
   itemId,
-  currentUser = "Anonymous",
+  currentUser,
   onBack,
 }) => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -91,7 +92,7 @@ const ChatComponent: React.FC<ChatComponentProps> = ({
       if (newMessage.trim() && socketRef.current && isConnected) {
         socketRef.current.emit("sendMessage", {
           chatId,
-          sender: currentUser,
+          sender: currentUser?.name || "Unknown",
           message: newMessage.trim(),
         });
         setNewMessage("");
@@ -127,13 +128,13 @@ const ChatComponent: React.FC<ChatComponentProps> = ({
   return (
     <div className="h-screen bg-gray-50 flex flex-col">
       {/* Chat Header */}
-      <header className="bg-[#5a189a] text-white px-4 py-4 shadow-lg flex-shrink-0">
+      <header className="bg-cyan-600 text-white px-4 py-4 shadow-lg flex-shrink-0">
         <div className="max-w-4xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
             {onBack && (
               <button
                 onClick={onBack}
-                className="hover:bg-[#3c096c] p-2 rounded-lg transition-colors"
+                className="hover:bg-cy p-2 rounded-lg transition-colors"
                 aria-label="Go back"
               >
                 <ArrowLeft size={20} />
@@ -142,9 +143,7 @@ const ChatComponent: React.FC<ChatComponentProps> = ({
             <MessageCircle size={24} />
             <div>
               <h1 className="font-bold text-lg">Item Discussion</h1>
-              <p className="text-purple-200 text-sm">
-                Chat about item #{itemId}
-              </p>
+              <p className="text-cyan-600 text-sm">Chat about item #{itemId}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -194,24 +193,24 @@ const ChatComponent: React.FC<ChatComponentProps> = ({
                   <div
                     key={`${msg.sender}-${msg.timestamp}-${index}`}
                     className={`flex ${
-                      msg.sender === currentUser
+                      msg.sender === currentUser?.name
                         ? "justify-end"
                         : "justify-start"
                     }`}
                   >
                     <div
                       className={`max-w-md lg:max-w-lg px-4 py-3 rounded-2xl shadow-sm ${
-                        msg.sender === currentUser
+                        msg.sender === currentUser?.name
                           ? "bg-[#5a189a] text-white rounded-br-md"
                           : "bg-white border border-gray-200 rounded-bl-md"
                       }`}
                     >
                       <div className="flex items-center gap-2 mb-2">
-                        <User size={14} className="opacity-70" />
+                        <UserIcon size={14} className="opacity-70" />
                         <span
                           className={`text-sm font-medium ${
-                            msg.sender === currentUser
-                              ? "text-purple-200"
+                            msg.sender === currentUser?.name
+                              ? "text-cyan-700"
                               : "text-gray-600"
                           }`}
                         >
@@ -219,8 +218,8 @@ const ChatComponent: React.FC<ChatComponentProps> = ({
                         </span>
                         <time
                           className={`text-xs ml-auto ${
-                            msg.sender === currentUser
-                              ? "text-purple-200"
+                            msg.sender === currentUser?.name
+                              ? "text-cyan-700"
                               : "text-gray-400"
                           }`}
                           dateTime={new Date(msg.timestamp).toISOString()}
