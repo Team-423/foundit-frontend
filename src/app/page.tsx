@@ -86,10 +86,6 @@ export default function Page() {
   return (
     <>
       <div className="min-h-screen bg-[#f0f8ff] flex flex-col items-center py-10 px-4">
-        {/* <h1 className="text-4xl font-extrabold text-[#1e6091] text-center mb-8">
-          Hello, team 423! :)
-        </h1> */}
-
         {/* Main Search Section */}
         <div className="w-full max-w-4xl bg-[#ffffff] p-8 rounded-xl shadow-2xl space-y-6">
           <div className="w-full">
