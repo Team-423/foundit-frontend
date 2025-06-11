@@ -8,10 +8,5 @@ export default function ChatPage() {
   const params = useParams();
   const itemId = params.itemId as string;
 
-  return (
-    <ChatComponent
-      itemId={itemId}
-      currentUser="test" // Optional, defaults to "Anonymous"
-    />
-  );
+  return <ChatComponent itemId={itemId} currentUser="testUser" />;
 }

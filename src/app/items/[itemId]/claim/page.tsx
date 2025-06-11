@@ -126,7 +126,7 @@ export default function Claim() {
                 : "Submit Claim"}
             </button>
             {submitStatus === "submitted" ? (
-              <Link href="/chats">
+              <Link href={`/items/${itemId}/chat`}>
                 <button className="bg-[#38A3A5] px-6 py-3 rounded-lg text-white font-medium text-lg shadow-md hover:bg-[#2d8a8c] transition-colors disabled:opacity-50">
                   Chat to Finder
                 </button>
