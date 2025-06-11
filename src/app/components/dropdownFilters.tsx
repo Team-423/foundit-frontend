@@ -216,7 +216,7 @@ export default function DropdownFilters({
               </div>
             )}
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-[#f0f8ff] rounded-xl shadow-md">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4 bg-[#f0f8ff] rounded-xl shadow-md">
               <Dropdown
                 options={
                   isLoadingLocations

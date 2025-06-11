@@ -76,14 +76,14 @@ export default function LoginPage() {
             <div className="flex flex-col gap-4">
               <button
                 onClick={() => handleLogin("guest")}
-                className="w-full bg-[#22577A] hover:bg-[#38A3A5] text-white font-semibold p-2 rounded"
+                className="w-full bg-[#168aad] hover:bg-[#1e6091] text-white font-semibold p-2 rounded"
               >
                 Log In
               </button>
 
               <button
                 onClick={() => handleLogin("guest")}
-                className="w-full bg-[#98a4ac] hover:bg-[#38A3A5] text-white font-semibold p-2 rounded"
+                className="w-full bg-[#98a4ac] hover:bg-[#18232b] text-white font-semibold p-2 rounded"
               >
                 Continue as Guest
               </button>

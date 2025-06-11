@@ -20,9 +20,12 @@ const Header = () => {
 
   return (
     <header className="w-full p-4 shadow-md sticky top-0 z-[100] bg-[#9FD8CE]">
-      <div className="max-w-screen-lg mx-auto flex items-center justify-between px-4 py-4 h-25">
+      <div className="max-w-screen-lg mx-auto flex flex-wrap items-center justify-between px-4 py-4 gap-y-4">
         {/* Logo Section */}
-        <Link href="/">
+        <Link
+          href="/"
+          className="w-full sm:w-auto flex justify-center sm:justify-start"
+        >
           <Image
             className="transition-transform duration-300 hover:scale-110"
             src="/images/logo/found-it-logo.png"
@@ -35,23 +38,26 @@ const Header = () => {
 
         {/* Post buttons - only show for logged in seekers/finders */}
 
-        <nav className="flex items-center gap-4">
+        <nav className="flex flex-row sm:flex-wrap items-center gap-4 px-2 sm:px-4 w-full sm:w-auto">
           <Link
             href="/postLostItem"
-            className="px-4 py-2 rounded-md bg-[#5a189a] text-white hover:bg-[#3c096c] transition font-bold"
+            className="w-full sm:w-[160px] text-center px-4 py-2 rounded-md bg-[#168aad] text-white hover:bg-[#1e6091] transition font-bold"
           >
             Post Lost Item
           </Link>
           <Link
             href="/postFoundItem"
-            className="px-4 py-2 rounded-md bg-[#9d4edd] text-white hover:bg-[#3c096c] transition font-bold"
+            className="w-full sm:w-[160px] text-center px-4 py-2 rounded-md bg-[#168aad] text-white hover:bg-[#1e6091] transition font-bold"
           >
             Post Found Item
           </Link>
         </nav>
 
         {/* User Section */}
-        <Link href={profileHref}>
+        <Link
+          href={profileHref}
+          className="w-full sm:w-auto flex justify-center sm:justify-end"
+        >
           <div className="flex items-center gap-3 text-gray-700 hover:opacity-80 transition-opacity">
             <div className="w-14 h-14 bg-[#22577A] rounded-full flex items-center justify-center">
               <FaUserAlt className="text-white" size={20} />
