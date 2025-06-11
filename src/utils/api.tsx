@@ -156,6 +156,26 @@ export const getItemImgById = async (item_id: string) => {
   return data.itemById.img_url;
 };
 
+export const getItemWithQueries = async (queries: {
+  item_name?: string;
+  category_id?: string;
+  location_id?: string;
+  colour_id?: string;
+  brand_id?: string;
+  type?: "lost" | "found";
+}) => {
+  const params = new URLSearchParams({
+    ...(queries.item_name && { item_name: queries.item_name }),
+    ...(queries.category_id && { category: queries.category_id }),
+    ...(queries.location_id && { location: queries.location_id }),
+    ...(queries.colour_id && { colour: queries.colour_id }),
+    ...(queries.brand_id && { brand: queries.brand_id }),
+    ...(queries.type && { type: queries.type }),
+  });
+  console.log(params.toString(), "<<<<in api");
+  const { data } = await itemsApi.get(`?${params.toString()}`);
+  return data;
+  
 export const getItemById = async (item_id: string) => {
   const { data } = await itemsApi.get<ItemResponse>(`/${item_id}`);
   return {
