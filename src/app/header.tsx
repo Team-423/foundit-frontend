@@ -29,7 +29,7 @@ const Header = () => {
   };
 
   return (
-    <header className="w-full p-4 shadow-md sticky top-0 z-[100] bg-[#9FD8CE]">
+    <header className="w-full py-2 px-4 shadow-md sticky top-0 z-[100] bg-[#9FD8CE]">
       <div className="max-w-screen-lg mx-auto flex flex-wrap items-center justify-between px-4 py-4 gap-y-4">
         {/* Logo Section */}
         <Link
@@ -83,7 +83,7 @@ const Header = () => {
                     event.stopPropagation();
                     handleLogout();
                   }}
-                  className="bg-[#38A3A5] hover:bg-red-400 text-white px-2 py-1 rounded text-xs transition text-center w-fit"
+                  className="bg-[#38A3A5] hover:bg-red-400 text-white px-2 py-1 rounded text-xs transition text-center w-fit whitespace-nowrap"
                 >
                   Log Out
                 </button>
