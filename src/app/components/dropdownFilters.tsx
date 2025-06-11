@@ -54,58 +54,7 @@ export default function DropdownFilters({
   const [isLoadingLocations, setIsLoadingLocations] = useState(true);
   const [isLoadingBrands, setIsLoadingBrands] = useState(true);
   const [isLoadingColours, setIsLoadingColours] = useState(true);
-  const [isError, setIsError] = useState(false);
-  
-  useEffect(() => {
-    getCategories()
-    .then((categoryData) => {
-      setCategories(categoryData);
-    })
-    .catch((error) => {
-      console.error("Error fetching categories:", error);
-      setIsError(true);
-    })
-    .finally(() => {
-      setIsLoadingCategories(false);
-    });
-    
-    getLocations()
-    .then((locationData) => {
-      setLocations(locationData);
-    })
-    .catch((error) => {
-      console.error("Error fetching locations:", error);
-      setIsError(true);
-    })
-    .finally(() => {
-      setIsLoadingLocations(false);
-    });
-    
-    getBrands()
-    .then((brandData) => {
-      setBrands(brandData);
-    })
-    .catch((error) => {
-      console.error("Error fetching brands:", error);
-      setIsError(true);
-    })
-    .finally(() => {
-      setIsLoadingBrands(false);
-    });
-    
-    getColours()
-    .then((colourData) => {
-      setColours(colourData);
-    })
-    .catch((error) => {
-      console.error("Error fetching colours:", error);
-      setIsError(true);
-    })
-    .finally(() => {
-      setIsLoadingColours(false);
-    });
-  }, []);
-  
+
   const [errors, setErrors] = useState<{
     categories?: string;
     locations?: string;
@@ -231,14 +180,17 @@ export default function DropdownFilters({
     fetchData();
   }, []);
 
-  return (
-    <>
-      <div className="m-10 space-y-6">
-        <p>Please select your options: (* fields are required)</p>
-        {isError && (
-          <p className="text-red-500 text-sm">
-            Failed to load some filters. Please refresh the page.
-          </p>
+return (
+  <>
+    <div className="m-10 space-y-6">
+      <p>Please select your options: (* fields are required)</p>
+
+      {errors && (
+        <p className="text-red-500 text-sm">
+          Failed to load some filters. Please refresh the page.
+        </p>
+      )}
+
       <div className="m-6 space-y-4">
         {(errors.categories ||
           errors.locations ||
@@ -267,6 +219,7 @@ export default function DropdownFilters({
             )}
           </div>
         )}
+
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-[#f0f8ff] rounded-xl shadow-md">
           <Dropdown
             options={
@@ -280,12 +233,12 @@ export default function DropdownFilters({
                   }))
             }
             label="Location*"
-            onSelectAction={setSelectedLocation}
-            selected={selectedLocation}
             onSelectAction={handleLocationChange}
+            selected={selectedLocation}
             isOpen={openDropdown === "location"}
             onToggle={() => handleToggleDropdown("location")}
           />
+
           <Dropdown
             options={
               isLoadingCategories
@@ -298,12 +251,12 @@ export default function DropdownFilters({
                   }))
             }
             label="Category*"
-            onSelectAction={setSelectedCategory}
-            selected={selectedCategory}
             onSelectAction={handleCategoryChange}
+            selected={selectedCategory}
             isOpen={openDropdown === "category"}
             onToggle={() => handleToggleDropdown("category")}
           />
+
           <Dropdown
             options={
               isLoadingBrands
@@ -319,12 +272,12 @@ export default function DropdownFilters({
                   ]
             }
             label="Brand"
-            onSelectAction={setSelectedBrand}
-            selected={selectedBrand}
             onSelectAction={handleBrandChange}
+            selected={selectedBrand}
             isOpen={openDropdown === "brand"}
             onToggle={() => handleToggleDropdown("brand")}
           />
+
           <Dropdown
             options={
               isLoadingColours
@@ -340,14 +293,14 @@ export default function DropdownFilters({
                   ]
             }
             label="Colour"
-            onSelectAction={setSelectedColour}
-            selected={selectedColour}
             onSelectAction={handleColourChange}
+            selected={selectedColour}
             isOpen={openDropdown === "colour"}
             onToggle={() => handleToggleDropdown("colour")}
           />
         </div>
       </div>
-    </>
-  );
+    </div>
+  </>
+);
 }
