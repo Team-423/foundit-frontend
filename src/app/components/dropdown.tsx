@@ -23,18 +23,12 @@ export default function Dropdown({
   label,
   onSelectAction,
   selected,
-}: DropdownProps) {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   isOpen,
   onToggle,
 }: DropdownProps) {
-  const [selected, setSelected] = useState<string>(label);
-
   const handleSelect = (option: Option) => {
-    setIsOpen(false);
-    setSelected(option.name);
-    onToggle();
     onSelectAction(option);
+    onToggle();
   };
 
   const displayText = selected?.name || label;
