@@ -2,7 +2,12 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { getCategories, getColours, getBrands } from "../../utils/api";
+import {
+  getCategories,
+  getColours,
+  getBrands,
+  getLocations,
+} from "../../utils/api";
 
 const ItemLocationMap = dynamic(() => import("../components/ItemLocationMap"), {
   ssr: false,
@@ -21,6 +26,7 @@ export default function PostLostItemPage() {
   const [brand, setBrand] = useState("");
   const [size, setSize] = useState("");
   const [material, setMaterial] = useState("");
+  const [location, setLocation] = useState("");
 
   const [categoryOptions, setCategoryOptions] = useState<
     { _id: string; category_name: string }[]
@@ -30,6 +36,9 @@ export default function PostLostItemPage() {
   >([]);
   const [brandOptions, setBrandOptions] = useState<
     { _id: string; brand_name: string }[]
+  >([]);
+  const [locationOptions, setLocationOptions] = useState<
+    { _id: string; location_name: string }[]
   >([]);
 
   const [success, setSuccess] = useState(false);
@@ -47,6 +56,11 @@ export default function PostLostItemPage() {
 
   useEffect(() => {
     const fetchOptions = async () => {
+      setCategoryOptions(await getCategories());
+      setColourOptions(await getColours());
+      setBrandOptions(await getBrands());
+      setLocationOptions(await getLocations());
+
       const categories = await getCategories();
       if (typeof categories === "string") {
         console.error(categories); // or set an error state if you want
@@ -86,7 +100,7 @@ export default function PostLostItemPage() {
       author: "maria.watson",
       category,
       description: details,
-      location: "Manchester",
+      location,
       address,
       coordinates: coords,
       colour,
@@ -125,6 +139,7 @@ export default function PostLostItemPage() {
       setBrand("");
       setSize("");
       setMaterial("");
+      setLocation("");
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -164,6 +179,25 @@ export default function PostLostItemPage() {
             required
             className="w-full border p-2 rounded"
           />
+        </div>
+
+        <div>
+          <label className="block text-m font-medium text-gray-700 mb-1">
+            Location
+          </label>
+          <select
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            required
+            className="w-full border p-2 rounded"
+          >
+            <option value="">Select a location</option>
+            {locationOptions.map((loc) => (
+              <option key={loc._id} value={loc.location_name}>
+                {loc.location_name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>
