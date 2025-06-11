@@ -10,10 +10,10 @@ export default function LoginPage() {
   const handleLogin = (userType: "alice" | "bob" | "guest") => {
     if (userType === "alice") {
       setUser(MOCK_USERS.alice);
-      router.push("/profile/6848dbfff00779a4e05a3e4b");
+      router.push("/profile/6849846ffbfe2627b7b10ae1");
     } else if (userType === "bob") {
       setUser(MOCK_USERS.bob);
-      router.push("/profile/6848dbfff00779a4e05a3e4c");
+      router.push("/profile/6849846ffbfe2627b7b10ae2");
     } else if (userType === "guest") {
       setUser(MOCK_USERS.guest);
       router.push("/");
