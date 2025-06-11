@@ -21,7 +21,7 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="relative min-h-screen flex items-start justify-center bg-gray-100 p-6">
+    <main className="relative min-h-screen flex items-start justify-center p-6">
       {/* Debug Info in Top-Right */}
 
       <section className="w-full max-w-md">

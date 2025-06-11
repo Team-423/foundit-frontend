@@ -1,8 +1,9 @@
 export default function GuestUserProfile() {
   return (
-    <div className="flex items-center justify-center bg-gray-100 p-20">
-      <div className="bg-white rounded-xl shadow-lg p-10 max-w-md text-center space-y-6">
-        <h2 className="text-2xl font-bold text-[#22577A]">Guest Access</h2>
+    // Full height & width with background to fill the screen space inside main
+    <div className="flex flex-col items-center justify-center bg-gray-100 w-full h-full p-10">
+      <div className="bg-white rounded-lg shadow-md p-8 max-w-md w-full text-center space-y-4">
+        <h2 className="text-2xl font-bold text-gray-800">Guest Access</h2>
         <p className="text-gray-700">
           Hi there! You’re currently browsing as a guest. To claim items, chat
           with users, post listings, and more, please sign up or log in.
@@ -10,12 +11,12 @@ export default function GuestUserProfile() {
         <div className="flex justify-center gap-4">
           <a
             href="/login"
-            className="bg-[#22577A] hover:bg-[#38A3A5] text-white font-semibold py-2 px-6 rounded"
+            className="bg-gray-800 hover:bg-gray-600 text-white font-semibold py-2 px-6 rounded"
           >
             Log In
           </a>
           <a
-            href="/login"
+            href="/signup"
             className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 px-6 rounded"
           >
             Sign Up
