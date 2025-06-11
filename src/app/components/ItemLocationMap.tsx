@@ -25,6 +25,13 @@ type LocationMapProps = {
   onAddressSelect?: (address: string | null) => void;
 };
 
+type Suggestion = {
+  lat: string;
+  lon: string;
+  display_name: string;
+  [key: string]: string;
+};
+
 // Marker that responds to map clicks and reverse geocodes the position
 function LocationMarker({
   position,
@@ -100,7 +107,7 @@ function MapController({
       setPosition(selectedLocation);
       onSelect(selectedLocation);
     }
-  }, [selectedLocation]);
+  }, [selectedLocation, map, setPosition, onSelect]);
 
   return null;
 }
@@ -115,7 +122,7 @@ export default function ItemLocationMap({
     null
   );
   const [query, setQuery] = useState("");
-  const [suggestions, setSuggestions] = useState<any[]>([]);
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<{
     lat: number;
     lng: number;
@@ -223,7 +230,7 @@ export default function ItemLocationMap({
   };
 
   // Handle suggestion click
-  const handleSuggestionClick = (suggestion: any) => {
+  const handleSuggestionClick = (suggestion: Suggestion) => {
     shouldFetch.current = false;
     const coords = {
       lat: parseFloat(suggestion.lat),

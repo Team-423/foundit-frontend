@@ -18,13 +18,13 @@
     cursor: url("/images/pindrop-icon/custom-pindrop-cursor-red.png") 19 38,
       crosshair !important;
   }
-  .no-scrollbar::-webkit-scrollbar {
+  /* .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
-  }
+  } */
 }
 
 @layer components {
