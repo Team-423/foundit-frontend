@@ -17,7 +17,7 @@ export default function MeetTheTeam() {
     {
       name: "Carly Zhong",
       role: "Junior Developer",
-      bio: "Carly's Bio",
+      bio: "Hi, I am Carly. I was an accountant and now I am transitioning into tech with a deep passion for software development and data engineering. I love using programming to solve real-world problems and create solutions that make life simpler, more efficient, and more human-centred.",
       linkedin: "https://www.linkedin.com/in/carlyzhong/",
       github: "https://github.com/carlyzhong",
     },
@@ -45,7 +45,7 @@ export default function MeetTheTeam() {
     {
       name: "Pourya Azari",
       role: "Junior Developer",
-      bio: "",
+      bio: "Hello! I’m Pourya, a junior developer working with JavaScript frameworks and libraries alongside Node.js. I come from a background in game art and graphic design, which helps me bring a creative edge to problem-solving and user-focused development.",
       linkedin: "https://www.linkedin.com/in/pouryaazari/",
       github: "https://github.com/p021a",
     },
