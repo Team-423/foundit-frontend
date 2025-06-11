@@ -1,4 +1,4 @@
-// route "/profile"
+// route "/guest"
 "use client";
 
 import { useEffect, useState } from "react";
