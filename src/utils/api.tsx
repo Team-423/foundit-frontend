@@ -61,46 +61,67 @@ interface ItemImgResponse {
 
 const itemsApi = axios.create({
   baseURL: "https://foundit-backend-dg0o.onrender.com/api/items",
+  timeout: 10000, // 10 second timeout
 });
 
 export const getCategories = async () => {
-  const { data } = await itemsApi.get<CategoriesResponse>("/categories");
-  return data.categories
-    .map((category) => ({
-      _id: category._id,
-      category_name: category.category_name,
-    }))
-    .sort((a, b) => (a.category_name > b.category_name ? 1 : -1));
+  try {
+    const { data } = await itemsApi.get<CategoriesResponse>("/categories");
+    return data.categories
+      .map((category) => ({
+        _id: category._id,
+        category_name: category.category_name,
+      }))
+      .sort((a, b) => (a.category_name > b.category_name ? 1 : -1));
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    return "Failed to load categories. Please try again.";
+  }
 };
 
 export const getLocations = async () => {
-  const { data } = await itemsApi.get<LocationsResponse>("/locations");
-  return data.locations
-    .map((location) => ({
-      _id: location._id,
-      location_name: location.location_name,
-    }))
-    .sort((a, b) => (a.location_name > b.location_name ? 1 : -1));
+  try {
+    const { data } = await itemsApi.get<LocationsResponse>("/locations");
+    return data.locations
+      .map((location) => ({
+        _id: location._id,
+        location_name: location.location_name,
+      }))
+      .sort((a, b) => (a.location_name > b.location_name ? 1 : -1));
+  } catch (error) {
+    console.error("Error fetching locations:", error);
+    return "Failed to load locations. Please try again.";
+  }
 };
 
 export const getBrands = async () => {
-  const { data } = await itemsApi.get<BrandsResponse>("/brands");
-  return data.brands
-    .map((brand) => ({
-      _id: brand._id,
-      brand_name: brand.brand_name,
-    }))
-    .sort((a, b) => (a.brand_name > b.brand_name ? 1 : -1));
+  try {
+    const { data } = await itemsApi.get<BrandsResponse>("/brands");
+    return data.brands
+      .map((brand) => ({
+        _id: brand._id,
+        brand_name: brand.brand_name,
+      }))
+      .sort((a, b) => (a.brand_name > b.brand_name ? 1 : -1));
+  } catch (error) {
+    console.error("Error fetching brands:", error);
+    return "Failed to load brands. Please try again.";
+  }
 };
 
 export const getColours = async () => {
-  const { data } = await itemsApi.get<ColoursResponse>("/colours");
-  return data.colours
-    .map((colour) => ({
-      _id: colour._id,
-      colour: colour.colour,
-    }))
-    .sort((a, b) => (a.colour > b.colour ? 1 : -1));
+  try {
+    const { data } = await itemsApi.get<ColoursResponse>("/colours");
+    return data.colours
+      .map((colour) => ({
+        _id: colour._id,
+        colour: colour.colour,
+      }))
+      .sort((a, b) => (a.colour > b.colour ? 1 : -1));
+  } catch (error) {
+    console.error("Error fetching colours:", error);
+    return "Failed to load colours. Please try again.";
+  }
 };
 
 export const getQandA = async (item_id: string) => {
@@ -119,4 +140,25 @@ export const patchQandA = async (item_id: string, answers: string[]) => {
 export const getItemImgById = async (item_id: string) => {
   const { data } = await itemsApi.get<ItemImgResponse>(`/${item_id}`);
   return data.itemById.img_url;
+};
+
+export const getItemWithQueries = async (queries: {
+  item_name?: string;
+  category_id?: string;
+  location_id?: string;
+  colour_id?: string;
+  brand_id?: string;
+  type?: "lost" | "found";
+}) => {
+  const params = new URLSearchParams({
+    ...(queries.item_name && { item_name: queries.item_name }),
+    ...(queries.category_id && { category: queries.category_id }),
+    ...(queries.location_id && { location: queries.location_id }),
+    ...(queries.colour_id && { colour: queries.colour_id }),
+    ...(queries.brand_id && { brand: queries.brand_id }),
+    ...(queries.type && { type: queries.type }),
+  });
+  console.log(params.toString(), "<<<<in api");
+  const { data } = await itemsApi.get(`?${params.toString()}`);
+  return data;
 };

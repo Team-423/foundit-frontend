@@ -1,104 +1,90 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
-import ItemsList from '../components/itemsList';
-import { Item } from '../types';
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import ItemsList from "../components/itemsList";
+import { getItemWithQueries } from "../../utils/api";
+import Loading from "../loading";
 
-function Loading() {
-  return (
-    <div className="flex justify-center items-center py-8">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
-      <p className="ml-4 text-lg text-gray-700">Loading items...</p>
-    </div>
-  );
+export interface Item {
+  _id: string;
+  item_name: string;
+  description: string;
+  address: string;
+  answers: string[];
+  author: {
+    _id: string;
+    username: string;
+  };
+  brand: {
+    _id: string;
+    brand_name: string;
+  };
+  category: {
+    _id: string;
+    category_name: string;
+  };
+  colour: {
+    _id: string;
+    colour: string;
+  };
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
+  created_at: string;
+  found: boolean;
+  img_url: string;
+  location: {
+    _id: string;
+    location_name: string;
+  };
+  lost: boolean;
+  material: string;
+  questions: string[];
+  resolved: boolean;
+  size: string;
+  __v: number;
 }
 
 export default function ItemsPage() {
   const searchParams = useSearchParams();
-
   const [items, setItems] = useState<Item[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const urlSearchTerm = searchParams.get('search');
-    const urlType = searchParams.get('type');
-    const urlLocationId = searchParams.get('location');
-    const urlCategoryId = searchParams.get('category');
-
-    const hasMandatoryParamsForFetch =
-        urlSearchTerm &&
-        (urlType === 'lost' || urlType === 'found') &&
-        urlLocationId &&
-        urlCategoryId;
-
-    if (!hasMandatoryParamsForFetch) {
-        setItems([]);
-        setIsLoading(false);
-        setError(null);
-        return;
-    }
-
     async function fetchItems() {
-      setIsLoading(true);
-      setError(null);
-
-      const apiQuery = searchParams.toString() ? `?${searchParams.toString()}` : '';
-
       try {
-        const BASE_BACKEND_URL = "https://foundit-backend-dg0o.onrender.com";
-        const ITEMS_API_PATH = "/api/items";
-
-        const response = await fetch(`<span class="math-inline">\{BASE\_BACKEND\_URL\}</span>{ITEMS_API_PATH}${apiQuery}`);
-
-        if (!response.ok) {
-          const errorText = response.statusText || `Status: ${response.status} (No status text)`;
-          throw new Error(`Failed to fetch items: ${errorText}`);
-        }
-
-        const data = await response.json();
-        setItems(Array.isArray(data) ? data : data.items || []);
-      } catch (err: any) {
+        const result = await getItemWithQueries({
+          item_name: searchParams.get("search") || "",
+          category_id: searchParams.get("category") || "",
+          location_id: searchParams.get("location") || "",
+          colour_id: searchParams.get("colour") || "",
+          brand_id: searchParams.get("brand") || "",
+          type: (searchParams.get("type") as "lost" | "found") || "",
+        });
+        console.log("API Response:", result[0]);
+        setItems(result);
+      } catch (err) {
         console.error("Error fetching items:", err);
-        setError(err.message || "An unexpected error occurred while fetching items.");
       } finally {
         setIsLoading(false);
       }
     }
 
     fetchItems();
-
   }, [searchParams]);
 
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">
-        Search Results
-      </h1>
+  if (isLoading) {
+    return <Loading />;
+  }
 
-      {isLoading ? (
-        <Loading />
-      ) : error ? (
-        <div className="container mx-auto px-4 py-8 text-center text-red-600 text-lg">
-          Error: {error}
-          <p className="text-sm text-gray-500 mt-2">
-          </p>
-        </div>
-      ) : (
-        searchParams.toString() === '' || !(searchParams.get('search') && (searchParams.get('type') === 'lost' || searchParams.get('type') === 'found') && searchParams.get('location') && searchParams.get('category')) ? (
-          <div className="text-center py-8 text-gray-600 text-lg">
-            <p>Please use the search form on the <a href="/" className="text-blue-600 hover:underline">main page</a> to find items.</p>
-          </div>
-        ) : items.length === 0 ? (
-          <div className="text-center py-8 text-gray-600 text-lg">
-            <p>No items found matching your search criteria.</p>
-            <p>Try a different search term or adjust your filters on the <a href="/" className="text-blue-600 hover:underline">main page</a>.</p>
-          </div>
-        ) : (
-          <ItemsList items={items} />
-        )
-      )}
+  return (
+    <div className="container mx-auto px-4 py-8 ">
+      <h1 className="text-3xl font-extrabold text-[#1e6091] text-center mb-8">
+        Items List
+      </h1>
+      <ItemsList items={items} />
     </div>
   );
 }

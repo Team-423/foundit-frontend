@@ -1,41 +1,60 @@
 import Link from "next/link";
-import { Item } from "../types";
+import { Item } from "../items/page";
 
 interface ItemCardProps {
   item: Item;
 }
 
 export default function ItemCard({ item }: ItemCardProps) {
+  const timeAgo = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+    if (seconds < 60) return `${seconds} seconds ago`;
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes} minutes ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours} hours ago`;
+    const days = Math.floor(hours / 24);
+    return `${days} days ago`;
+  };
+
   return (
     <Link href={`/items/${item._id}`} className="block">
-      <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
-        {item.image ? (
-          <img
-            src={item.image}
-            alt={item.name}
-            className="w-full h-48 object-cover"
-          />
-        ) : (
-          <div className="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500 text-sm">
-            No Image Available
-          </div>
-        )}
-        <div className="p-4">
-          <h3 className="text-xl font-semibold text-gray-800 mb-2 truncate">
-            {item.name}
+      <div className="bg-white p-6 border border-gray-200 hover:border-blue-500 transform hover:scale-102 transition-all duration-200 flex">
+        <div className="flex-none w-48 h-48 mr-6">
+          {item.img_url ? (
+            <img
+              src={item.img_url}
+              alt={item.item_name}
+              className="w-full h-full object-contain rounded-md"
+            />
+          ) : (
+            <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 text-base rounded-md">
+              No Image Available
+            </div>
+          )}
+        </div>
+        <div className="flex-1">
+          <h3 className="text-2xl font-semibold mb-3 text-[#1e6091] hover:text-[#2c7cb0] transition-colors">
+            {item.item_name}
           </h3>
-          <p className="text-gray-600 text-sm mb-1">
-            <span className="font-medium">Type:</span> {item.type}
+          <p className="text-gray-700 text-base mb-2">
+            <span className="font-medium">
+              {item.author.username} posted {timeAgo(item.created_at)}
+            </span>
           </p>
-          <p className="text-gray-600 text-sm mb-1">
-            <span className="font-medium">Category:</span> {item.category}
-          </p>
-          <p className="text-gray-600 text-sm mb-1">
-            <span className="font-medium">Location:</span> {item.location}
-          </p>
-          <p className="text-gray-600 text-sm text-right mt-2 text-blue-600 hover:underline">
-            View Details
-          </p>
+          {item.lost && (
+            <p className="text-gray-700 text-base">
+              This item was lost in {item.location.location_name}
+            </p>
+          )}
+          {item.found && (
+            <p className="text-gray-700 text-base">
+              This item was found in {item.location.location_name}
+            </p>
+          )}
         </div>
       </div>
     </Link>
