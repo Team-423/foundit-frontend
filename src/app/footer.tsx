@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 function Footer() {
   const currentYear = new Date().getFullYear();
@@ -15,6 +16,9 @@ function Footer() {
             width={0}
           />
         </a>
+        <Link href="/meet-the-team" className="hover:underline">
+          Meet The Team!
+        </Link>
       </div>
     </footer>
   );
