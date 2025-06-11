@@ -28,10 +28,18 @@ export default function PostFoundItemForm() {
   const [material, setMaterial] = useState("");
   const [location, setLocation] = useState("");
 
-  const [categoryOptions, setCategoryOptions] = useState([]);
-  const [colourOptions, setColourOptions] = useState([]);
-  const [brandOptions, setBrandOptions] = useState([]);
-  const [locationOptions, setLocationOptions] = useState([]);
+  const [categoryOptions, setCategoryOptions] = useState<
+    { _id: string; category_name: string }[]
+  >([]);
+  const [colourOptions, setColourOptions] = useState<
+    { _id: string; colour: string }[]
+  >([]);
+  const [brandOptions, setBrandOptions] = useState<
+    { _id: string; brand_name: string }[]
+  >([]);
+  const [locationOptions, setLocationOptions] = useState<
+    { _id: string; location_name: string }[]
+  >([]);
 
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
