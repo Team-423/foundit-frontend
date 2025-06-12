@@ -8,7 +8,7 @@ export default function DebugHeader() {
     <header className="sticky top-0 bg-yellow-100 border-b border-yellow-200 p-3 shadow-sm z-50">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <span className="font-medium text-yellow-800">Debug Info:</span>
+          <span className="font-medium text-yellow-800">Debug Console:</span>
           <span className="text-sm">
             Status:{" "}
             <strong>{isLoggedIn ? "Logged In" : "Not Logged In"}</strong>
