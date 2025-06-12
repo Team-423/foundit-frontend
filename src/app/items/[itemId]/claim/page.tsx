@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Loading from "../../../loading";
+import { useUser } from "../../../../contexts/UserContext";
 
 export default function Claim() {
   const { itemId } = useParams();
@@ -22,6 +23,7 @@ export default function Claim() {
   const [submitStatus, setSubmitStatus] = useState<
     "submitting" | "submitted" | null
   >(null);
+  const { user } = useUser();
 
   useEffect(() => {
     setIsLoading(true);
@@ -47,22 +49,22 @@ export default function Claim() {
     setAnswerFromSeeker(newAnswers);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitStatus("submitting");
 
-    patchQandA(itemId as string, answerFromSeeker)
-      .then((res) => {
-        console.log(res, "patching result");
-        //maybe send email
-      })
-      .catch((error) => {
-        console.error("Error submitting claim:", error);
-        setIsError(true);
-      })
-      .finally(() => {
-        setSubmitStatus("submitted");
+    try {
+      await patchQandA(itemId as string, {
+        answers: answerFromSeeker,
+        claimant_id: user?.id || "",
       });
+      console.log("Claim submitted and email sent!");
+    } catch (error) {
+      console.error("Error submitting claim or sending email:", error);
+      setIsError(true);
+    } finally {
+      setSubmitStatus("submitted");
+    }
   };
 
   if (isLoading) {

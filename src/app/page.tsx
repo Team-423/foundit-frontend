@@ -140,8 +140,7 @@ export default function Page() {
             Search
           </button>
         </div>
-
-        <div className="mt-12 w-full max-w-4xl">
+        <div className="mt-12 w-full px-4">
           <ResolvedItemsCarousel />
         </div>
       </div>

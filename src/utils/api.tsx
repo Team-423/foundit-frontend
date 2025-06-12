@@ -143,10 +143,13 @@ export const getQandA = async (item_id: string) => {
   return data.questionAndAnswerPairs;
 };
 
-export const patchQandA = async (item_id: string, answers: string[]) => {
+export const patchQandA = async (
+  item_id: string,
+  payload: { answers: string[]; claimant_id: string }
+) => {
   const { data } = await itemsApi.patch<PatchQandAResponse>(
     `/${item_id}/QandA`,
-    { answers }
+    payload
   );
   return data.questionAndAnswerPairs;
 };
