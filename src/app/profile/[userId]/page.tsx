@@ -65,6 +65,7 @@ export default function UserProfile() {
         <main className="flex flex-col md:flex-row gap-6 p-10 ">
           {/* Profile Card */}
           <div className="bg-white rounded shadow-md p-6 w-full md:w-1/3 space-y-4 text-center">
+          <h2 className="text-xl font-semibold mt-4">{user.username}</h2>
             <Image
               src={user.img_url}
               alt="Profile"
@@ -72,7 +73,6 @@ export default function UserProfile() {
               height={120}
               className="mx-auto rounded-full object-cover mt-2"
             />
-            <h2 className="text-xl font-semibold mt-4">{user.username}</h2>
             <div className="text-lg font-medium">Points: {user.points}</div>
             <Link href={`/profile/${user._id}/chat`}>
               <button className="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded mt-4">

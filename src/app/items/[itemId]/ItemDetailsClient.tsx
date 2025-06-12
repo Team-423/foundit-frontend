@@ -14,7 +14,7 @@ export default function ItemDetailsClient({ item }: { item: Item }) {
   const showActionButton = user && !isGuest && !isAuthor;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-start justify-center p-8">
+    <div className="min-h-screen flex items-start justify-center p-8">
       <div className="max-w-4xl w-full bg-white rounded-xl shadow-lg p-8 relative">
         <header className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-extrabold text-[#1e6091] text-center flex-grow">
