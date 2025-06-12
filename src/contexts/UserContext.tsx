@@ -26,6 +26,7 @@ interface UserContextType {
   isFinder: boolean;
   isGuest: boolean;
   isLoggedIn: boolean;
+  isHydrated: boolean;
 }
 
 const UserContext = createContext<UserContextType | null>(null);
@@ -90,6 +91,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     isFinder,
     isGuest,
     isLoggedIn,
+    isHydrated,
   };
 
   if (!isHydrated) {
@@ -102,6 +104,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
       isFinder: false,
       isGuest: false,
       isLoggedIn: false,
+      isHydrated: false,
     };
 
     return (

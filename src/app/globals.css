@@ -4,6 +4,13 @@
 /* Lapis Lazuli (logo - dark blue) - #22577A */
 /* Verdigris (logo - green-ish) - #38A3A5 */
 
+html,
+body,
+#__next {
+  height: 100%;
+  margin: 0;
+}
+
 @layer base {
   body {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;

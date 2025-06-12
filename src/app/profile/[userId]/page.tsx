@@ -6,7 +6,6 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import Loading from "../../loading";
-import { FaUserAlt } from "react-icons/fa";
 
 interface Item {
   _id: string;
@@ -61,19 +60,11 @@ export default function UserProfile() {
   return (
     <>
       {/* {User Page Container} */}
-      <div className="min-h-screen flex flex-col bg-[#ffffff]">
-        {/* {User Profile Header} */}
-        <header className="bg-gray-200 p-6 flex justify-center items-center shadow-md">
-          <div className="w-10 h-10 bg-[#22577A] rounded-full flex items-center justify-center mr-2">
-            <FaUserAlt className="text-white" size={20} />
-          </div>
-          <div className="text-xl font-semibold ">{user.username}</div>
-        </header>
-
+      <div className="min-h-screen flex flex-col">
         {/* Profile and Items Section */}
         <main className="flex flex-col md:flex-row gap-6 p-10 ">
           {/* Profile Card */}
-          <div className="bg-white rounded shadow-md p-6 w-full md:w-1/3 space-y-8 text-center">
+          <div className="bg-white rounded shadow-md p-6 w-full md:w-1/3 space-y-4 text-center">
             <Image
               src={user.img_url}
               alt="Profile"
@@ -81,9 +72,10 @@ export default function UserProfile() {
               height={120}
               className="mx-auto rounded-full object-cover mt-2"
             />
+            <h2 className="text-xl font-semibold mt-4">{user.username}</h2>
             <div className="text-lg font-medium">Points: {user.points}</div>
             <Link href={`/profile/${user._id}/chat`}>
-              <button className="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded">
+              <button className="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded mt-4">
                 My Chats
               </button>
             </Link>
