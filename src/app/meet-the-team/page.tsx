@@ -40,7 +40,7 @@ export default function MeetTheTeam() {
     {
       name: "Lera Dunning",
       role: "Junior Developer",
-      bio: "",
+      bio: "Hi! I’m Lera. I come from an accounting background but discovered my passion for problem solving and technology, so I decided to change careers and dive into software development. I enjoy tackling challenges with code and am eager to learn new skills!",
       linkedin: "https://www.linkedin.com/in/leradunning/",
       github: "https://github.com/LeraD98",
     },
