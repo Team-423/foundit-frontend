@@ -8,7 +8,7 @@ This front-end project utilises the back-end found-it server to display a lost a
 [Back-end link](https://github.com/Team-423/foundit-backend)
 
 ### Hosted Version
-[Hosted Link](see-it-post-it-foundit.netlify.app)
+[Hosted Link](https://see-it-post-it-foundit.netlify.app/)
 
 ## Versions (or higher)
 - axios: 1.9.0
